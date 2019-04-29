@@ -1,0 +1,31 @@
+<!--index.wxml-->
+<!--banner-->
+<view class='containerBox'>
+  <view class="content-title"></view>
+  <view class='selectBox'>
+      <view class='dataList border-top'>
+        <view class="section__title left">产品名称</view>
+        <view class="section right">{{productName}}</view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left">支付金额</view>
+        <view class="section right"><text class="orderAmount">{{orderAmount}}</text>元</view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left" wx:for="{{payType}}" data-index="{{index}}" data-id="{{index}}" wx:key="property">
+         <icon class='iconfont {{icon}}' color='#0af126' style='color:#18f432;font-size:24rpx;'></icon>
+        {{payTypeName}}
+        </view>
+        <view class="section right"><text class="iconfont icon-duihao icon-get {{iconActive}}" ></text></view>
+      </view>
+  </view>
+  <view class="content-title"></view>
+
+  <view class="content-block">
+    <!-- <navigator style='color:#fff' style='width:100%' url='/pages/failure/failure'>  -->
+      <button id="confirmBuy" type="primary" size="default" loading="{{false}}" plain="{{false}}"
+          disabled="{{false}}" bindtap="wxConfirm"> 支付 </button>
+     <!-- </navigator>  -->
+  </view>
+
+</view>

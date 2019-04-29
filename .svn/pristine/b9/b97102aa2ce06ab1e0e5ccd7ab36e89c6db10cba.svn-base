@@ -1,0 +1,77 @@
+<!--pages/memberHome/memberHome.wxml-->
+<!--头部logo-->
+<view class='logoBox'>
+    <view class='headerBox'>
+      <image class='logo' src='../../assets/images/memberHome/logo.png' ></image>
+      <text class='headerTx'>华瑞保险</text>
+    </view>
+<!--登录&注册-->
+    <view class='loginBox'>
+        <view class='loginReg' bindtap='login'>
+              <navigator class='login'>登录</navigator><text class='loginLin'>/</text>
+              <navigator class='login'>注册</navigator>    
+        </view>
+    </view>
+</view>
+
+
+<!--我的保单-->
+<view class="mypolicyBox">
+   <view class='iconfont icon-wodebaodan mypolicy'>
+      <text bindtap='myPolicyDdetail'>我的定单</text>
+      <text class='iconfont icon-dayuhao-copy-copy'></text>
+    </view>
+</view> 
+<view class="mypolicyBox">
+   <view class='iconfont icon-guanyu1 mypolicy'>
+         <text url='/pages/orderDetail/orderDetail'>关于华瑞</text> 
+        <!-- <navigator url='/pages/orderDetail/orderDetail'>关于华瑞</navigator> -->
+        <text class='iconfont icon-dayuhao-copy-copy'></text>
+    </view>
+</view> 
+
+<!--底部
+<view class='footerBox'>
+      <view class='footerLeft'>
+            <i class='iconfont icon-shouye-copy'></i>
+            <text>首页</text>    
+      </view>
+      <view class='footerRight active'>
+            <i class='iconfont icon-wode1'></i>
+            <text>我的</text>    
+      </view>
+</view>-->
+
+<!--弹出层-->
+<view class="modal" wx:if="{{showView}}" bindtap='cancel'>
+</view>
+<view class='modalBox' wx:if="{{showView}}">
+      <view class='modalHeader'>手机验证</view>
+      <!-- <view class='phoneBox'><input placeholder-class='place' value="{{mobileInfo}}" placeholder='手机号' bindinput="mobileinput" type='number'></input></view>
+      <view class='numBox'><input  placeholder-class='place' value="{{smsInfo}}"  placeholder='短信验证码' bindinput='smsinput'></input><text bindtap='getSecurityCode'>获取验证码</text></view>
+       <view class='btn'><navigator class='btnColor' url='/pages/user/index'>立即登录</navigator></view> </view>  -->
+       <form bindsubmit="formSubmit" >
+           <view class='phoneBox'><input placeholder-class='place' value="{{form.tel}}" name="tel" placeholder='手机号' bindinput="mobileinput" type='number'></input>
+           
+   <!-- <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style='width:170rpx;border:none;font-size:12px;line-height: 98rpx;color:#ffaf3e;background:transparent;position:absolute;right:30rpx;top:60rpx;'> 获取</button>  -->
+           </view> 
+          <view class='numBox'><input  placeholder-class='place' value="{{form.smsInfo}}" name="smsInfo" placeholder='短信验证码' bindinput='smsinput'></input>
+            <!-- <text bindtap='getSecurityCode'>{{getCodeNum}}</text>   -->
+            <!-- <button formType="submit" plain='true' class='getCode' style='border:none;font-size:12px;line-height: 98rpx;color:#ffaf3e;' disabled='{{buttonDisable}}'>{{getCodeNum}}</button>   -->
+            <button plain='true' class='getCode' style='border:none;font-size:12px;line-height: 98rpx;color:#ffaf3e;background:transparent;' disabled='{{buttonDisable}}' bindtap='getSecurityCode'>{{getCodeNum}}</button>  
+          </view>  
+          <!-- <view class='phoneBox'><input placeholder-class='place' value="{{}}" name="tel" placeholder='图形验证码' bindinput="graphinput"></input></view> -->
+          <view class='numBox' wx:if='{{show}}'><input  placeholder-class='place' value="{{graphCode}}" name="graphInfo" placeholder='图形验证码' bindinput='graphinput'></input>
+          <image src='{{graphUrl}}' style='width:200rpx;height:90rpx;' bindtap='getImage'></image>
+          </view>  
+
+
+           <!-- <view class='phoneBox' wx:for="{{user}}"><input placeholder-class='place' value="{{mobileInfo}}" name="{{item.tel}}" placeholder='手机号' bindinput="mobileinput" type='number'></input></view>  -->
+       
+      <!-- <view class='btn'><navigator class='btnColor'>立即登录</navigator></view>   -->
+       <view class="btn">
+        <button class='btnColor' formType="submit">立即登录</button>
+    </view> 
+     </form>
+</view> 
+

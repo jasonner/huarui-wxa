@@ -1,0 +1,65 @@
+page{
+  background:#EFEFF4;
+}
+.content-title{
+  padding:20rpx;
+  color:#8d8d8d;
+}
+.content-block{
+  padding: 30rpx;
+}
+
+/**datalist**/
+.dataListBox{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background: #fff;
+  padding:0rpx 30rpx;
+  line-height: 60rpx;
+  }
+.dataList{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background: #fff;
+  font-size: 30rpx;
+  }
+.left{
+  flex: 1;
+  width:200rpx;
+}
+.right{
+  color: #333;
+  flex: 2;
+  text-align: right;
+  overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.right input{
+  height:100%;
+}
+.img{
+  height: 572rpx;
+  width: 454rpx;
+}
+.border-top{
+  border-top: 1px solid #dfdfdf;
+  height: 104rpx;
+  line-height: 104rpx;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+/*selectBox*/
+.selectBox{
+  width: 100%;
+  box-shadow: 4rpx 4rpx 4rpx #dfdfdf;
+}
+.orderAmount{
+  color: red;
+}
+#confirmBuy{
+  background: #f3b256;
+}

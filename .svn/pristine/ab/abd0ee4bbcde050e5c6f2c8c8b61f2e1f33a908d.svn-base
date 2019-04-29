@@ -1,0 +1,2 @@
+<!--pages/healthTold/healthTold.wxml-->
+<web-view src='{{href}}'></web-view>

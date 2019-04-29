@@ -1,0 +1,18 @@
+<!--pages/abountHuaRui/index.wxml-->
+<view class='containerBox'>
+  <view class='abountHuaRui'>
+      <view align="center" class='abountHuaRuiLogo'>
+        <image src='../../image/logo.png'></image>
+        <view class='salesColtd'>华瑞保险销售有限公司</view>
+        <view class='salesColtdE'>HUARUI INSURANCE SALES CO LTD</view>
+      </view>
+    
+  </view>
+  <view class='intreduceBox'>
+      <view class='salesintreduce'>公司简介</view>
+      <view class='intreduce'>华瑞保险销售有限公司 （以下简称“公司”）于2013年7月8日经中国保险监督管理委员会批准设立（保监许可[2013]74号），于8月6日正式开业，注册地为上海，注册资本5,000万元，由国华人寿保险股份有限公司100%出资成立。</view>
+    <view class='intreduce'>
+      通过特色化的渠道、多元化的产品和专业化的销售服务体系，凭借金融混业经营的发展机遇，公司将建立起涵盖涉及保险、证券、基金、消费信用贷款、信用卡等金融保险理财工具性产品的综合性金融销售服务网络，最终发展成为一家全国性的专业综合金融服务（集团）公司。
+    </view>
+  </view>
+</view>

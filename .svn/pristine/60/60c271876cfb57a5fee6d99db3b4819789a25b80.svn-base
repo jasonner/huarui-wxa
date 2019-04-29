@@ -1,0 +1,225 @@
+/**index.wxss**/
+.vx-text{
+position:absolute;
+left:41rpx;
+top:137rpx;
+font-size:46rpx;
+color:#fff;
+
+
+}
+
+.wx-imgBg{
+  height: 398rpx;
+  width: 100%;
+}
+.vx-textDetail{
+position:absolute;
+right:20px;
+bottom:14px;
+color:#fff;
+font-size:28rpx;
+}
+.wx-listText{
+  line-height: 43rpx;
+}
+.listBox{
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx;
+  background: #fff; 
+  font-size:26rpx; 
+  box-sizing: border-box;
+  box-shadow: 2rpx 2rpx 2rpx #dfdfdf;
+}
+.txtf{
+  font-size: 24rpx;
+  
+}
+.more{
+  color:#4292cd;
+  font-size: 26rpx;
+}
+.stateListBox{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.checkbox{
+  width: 30rpx;
+  height: 30rpx;
+}
+.stateList{
+  flex: 1;
+  flex-basis:auto;
+  text-align: center;
+  background: #fdfbee;
+  margin:  0 5rpx;
+  margin-top: 50rpx;
+  line-height: 60rpx;
+  padding-bottom: 10rpx;
+}
+.active{
+  background: #fff;
+  position: relative;
+  padding-top: 15rpx;
+  
+}
+.active>.stateListMon{
+  color: #f3b256
+}
+.active::before{
+    width: 100%;
+    height: 3px;
+    background: red;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -1px;
+}
+.stateListMon{
+  margin-top: 10px;
+  color:#ee5768;
+  font-size: 40rpx;
+}
+.stateListTX{
+  font-size: 28rpx;
+}
+.stateListMun{
+  color: #999;
+  font-size: 25rpx;
+}
+/**datalist**/
+.dataListBox{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background: #fff;
+  padding:0rpx 30rpx;
+  line-height: 60rpx;
+  }
+.dataList{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background: #fff;
+  font-size: 28rpx;
+  }
+.left{
+  flex: 1;
+}
+.c9{
+  color: #999;
+}
+.right{
+  color: #333;
+  flex: 1;
+  text-align: right;
+}
+.border-top{
+  border-top: 1px solid #dfdfdf;
+  height: 104rpx;
+  line-height: 104rpx;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+/*selectBox*/
+.selectBox{
+  width: 100%;
+  box-shadow: 4rpx 4rpx 4rpx #dfdfdf;
+}
+/* 份数input */
+.fewNum{
+flex: 1;
+width: 100%;
+height:104rpx;
+line-height: 104rpx; 
+display: inline-block;
+text-align: right;
+padding-right: 30rpx;
+z-index:0;
+}
+/*intrduceBox*/
+
+.intrduceBox{
+  padding: 30rpx;
+  margin-bottom: 119rpx;
+  font-size: 28rpx;
+  line-height: 50rpx;
+}
+checkbox .wx-checkbox-input{
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 0;
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
+  font-size: 30rpx;
+}
+/*kefuBox*/
+.kefuBox{
+  width: 100%;
+  background: #fff;
+  color: #f3b256;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.kefuBox>view:nth-of-type(1){
+font-size: 42rpx;
+line-height: 94rpx;
+flex: 1;
+text-align: center;
+}
+.kefuBox>view:nth-of-type(2){
+  line-height: 94rpx;
+  font-size: 34rpx;
+  color: #fff;
+  background: #f3b256;
+  flex:1;
+  text-align: center;
+}
+.kefuText{
+  display: block;
+  color: #333;
+  text-align: center;
+  font-size: 14px;
+}
+.money{
+  color: #333;
+  font-size:30rpx;
+  margin-left: 18rpx; 
+}
+.noChose{
+  color: #e5ae6d;
+}
+
+.tab{  
+  display: flex;  
+  flex-direction: row;  
+}  
+.tab-left{  
+  width: 200rpx;  
+  line-height: 160%;  
+  border-right: solid 1px gray;  
+}  
+.tab-left view{  
+  border-bottom: solid 1px red;  
+}  
+.tab-left .active{  
+  color: #f00;  
+}  
+.tab-right{  
+  line-height: 160%;  
+}  
+.tab-right .right-item{  
+  padding-left: 15rpx;  
+  display: none;  
+}  
+.tab-right .right-item.numchose{  
+  display: block;  
+}

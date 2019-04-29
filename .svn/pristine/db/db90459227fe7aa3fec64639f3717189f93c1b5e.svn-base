@@ -1,0 +1,60 @@
+<!--pages/myPolicy/myPolicy.wxml-->
+<view class="body">
+  <view class="nav bc_white">
+    <view class="{{selected?'red':'default'}}" bindtap="selected">已付款</view>
+    <view class="{{selected1?'red':'default'}}" bindtap="selected1">待付款</view>
+  </view>
+  <view class="{{selected?'show':'hidden'}}">
+    <view class='noPolicyBox'>
+      <image class='noPolicy' src='./img/noPolicy.png'></image>
+      <text class='noPolicyText'>您暂无保单！</text>
+    </view>
+    <view class='policyBox'  style='display:none'>
+      <image class='detailBG1' src='img/swetBG.png'></image>
+      <view class='policy'>
+        <view>
+          <image class='iconImg' src='img/icon01.png'></image>
+          <text class='policyTX'>儿童及成人长期重疾险</text>
+        </view>
+        <view>
+          <image class='iconImg' src='img/icon02.png'></image>
+          <text class='policyTX'>保障期间：20年</text>
+        </view>
+        <view>
+          <image class='iconImg' src='img/icon3.png'></image>
+          <text class='policyTX'>保单号 : 017	WX2BH1200128</text>
+        </view>
+      </view>
+      <view class='policyMoney1'>
+            <view>已付款</view>
+            <view>37.00元</view>
+      </view>
+    </view>
+  </view>
+  <view class="{{selected1?'show':'hidden'}}">
+    <view class='noPolicyBox' style='display:none'>
+      <image class='noPolicy' src='./img/noPolicy.png'></image>
+      <text class='noPolicyText'>您暂无保单！</text>
+    </view>
+
+    <view class='noPolicyBox'>
+      <view class='policyBox'>
+        <image class='detailBG' src='img/swetBG.png'></image>
+        <view class='policy obligationPolicy'>
+          <view>
+            <image class='iconImg' src='img/icon01.png'></image>
+            <text class='policyTX'>儿童及成人长期重疾险</text>
+          </view>
+          <view>
+              <image class='iconImg' src='img/icon02.png'></image>
+              <text class='policyTX'>保障期间：20年</text>
+          </view>
+        </view>
+        <view class='policyMoney obligation'>
+              <view>37.00元</view>
+              <view bindtap='rightPAY'>立即支付</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

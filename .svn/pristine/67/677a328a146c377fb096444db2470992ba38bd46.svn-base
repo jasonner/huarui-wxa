@@ -1,0 +1,131 @@
+<!--index.wxml-->
+<!--banner-->
+<view class='containerBox'>
+  <view class="container" wx:key="property" wx:for="{{bannerInfo}}">
+    <image class='wx-imgBg' src='https:{{item.productImageUrl}}'></image>
+       <text class='vx-text'>{{item.productName}}</text>
+       <text class='vx-textDetail'>本产品由承保{{item.organizationName}}|已售出{{item.salesMult}}份</text>
+  </view>
+  <!--tip-->
+  <view class='listBox'>
+      <text  wx:for="{{titleArr}}" wx:key="property"  wx:for-item="value" class='wx-listText iconfont icon-iconfontdian'>{{value}}</text>
+       <navigator url='###' class='more' style='margin-left:30rpx'>查看更多特色</navigator>
+  </view> 
+<!-- productListSelect -->
+<view class='stateListBox' wx:if='{{productListShow}}'>
+      <view wx:for="{{safeguardPlansInfo}}" catchtap='productListSelect' data-index="{{index}}" data-id="{{index}}" wx:key="property" class="stateList {{tabArr.curHdIndex==item.productCode? 'active' : ''}}" id="{{item.productCode}}" >
+          <view class='stateListMon' id="{{item.productCode}}" data-id="{{item.productCode}}">{{item.planMoney}}
+          <text class='txtf'>￥起</text>
+      </view>
+      <view class='stateListMun'id="{{item.productCode}}" data-id="{{item.productCode}}">{{item.planName}}</view>   
+      </view>
+</view>
+
+  <!--productDataListIntroduce-->
+  <view class="dataListBox">
+    <view class='dataList' wx:for="{{planDesc}}"  wx:key="property">
+        <text class='left c9'>{{item.leftLabel}}</text>
+        <text class='right'>{{item.rightLabel}}</text>
+    </view>
+    <navigator class='more'>查看保障详情</navigator>
+  </view>
+
+  <!--Protection during-->
+  <view class='selectBox'>
+       <!-- 份数 -->
+      <view class='dataList border-top' hidden='{{fewNumShow}}'>
+        <text class='left'>份数</text>
+        <!-- <text class='right'>{{effectiveDate}}</text> -->
+       <input class='fewNum' disabled='{{fewNumDis}}' bindinput='fewNumChange'  type='number' value="{{fewNum}}"></input>
+      </view>
+
+      <!--保障期间  -->
+      <view class='dataList border-top' wx:if="ProtectionShow">
+        <text class='left'>保障期间</text>
+        <!-- <text class='right'>60岁</text> -->
+        <picker bindchange="ProtectionDataChange" disabled='{{!ProtectionDataChangeNO}}' value="{{ProtectionData}}" range="{{Protection}}">
+          <view class="picker right">
+            <text wx-if="{{!Protection[ProtectionData]}}">{{initialProtection}}</text>{{Protection[ProtectionData]}}<text class="iconfont icon-xiaoyuhao-down" style='margin-left:10rpx'></text>
+          </view>    
+        </picker>
+      </view>
+      <!--生效日期  -->
+      <view class='dataList border-top'>
+        <text class='left'>生效日期</text>
+        <!-- <text class='right'>{{effectiveDate}}</text> -->
+         <picker mode="date" value="{{date}}" start="{{effectiveDate}}" end="{{effectiveDate}}" bindchange="effective">
+        <view class="picker right">
+          <text wx:if="{{!date}}">{{effectiveDate}}</text>{{date}}
+        </view>
+      </picker>
+      </view>
+     
+      <!-- 被保人性别 -->
+      <view class="section dataList border-top" wx-if='{{sexShow}}'>
+        <view class="section__title left">被保人性别</view>
+        <picker bindchange="bindSexChange" disabled='{{sexChangeDis}}' value="{{sex}}" range="{{sexSelect}}">
+          <view class="picker right">
+            <text wx-if="{{!sexSelect[sex]}}">男</text>{{sexSelect[sex]}}<text class="iconfont icon-xiaoyuhao-down" style='margin-left:10rpx'></text>
+          </view>
+        </picker>
+      </view>
+      <!--缴费期间 -->
+      
+      <view class='dataList border-top' wx:if="{{PayDataShow}}">
+        <text class='left'>缴费期间</text>
+        <!-- <text class='right'>60岁</text> -->
+        <picker bindchange="PayDataChange" value="{{PayData}}" disabled='{{PayDataChangeSelectNo}}' range="{{PremiumPaymentPeriodData}}">
+          <view class="picker right">
+            <text wx-if="{{!PremiumPaymentPeriodData[PayData]}}">{{initialPremiumPaymentPeriod}}</text>{{PremiumPaymentPeriodData[PayData]}}<text class="iconfont icon-xiaoyuhao-down" style='margin-left:10rpx'></text>
+          </view>    
+        </picker>
+      </view>
+      <!--被保人生日  -->
+      <view class="section dataList border-top" wx:if="{{BirthdayShow}}">
+          <view class="section__title left">被保人生日</view>
+          <picker mode="date" value="{{date}}" start="{{birthDaystart}}" end="{{birthDayEnd}}" bindchange="chooseBirthday">
+            <view class="picker right">
+              <text wx:if="{{!date}}">{{initialBirthday}}</text>{{date}}
+            </view>
+          </picker>
+      </view>
+      <!--用户手机号  -->
+        <view class="dataList border-top">
+          <view class='phoneLeft'>手机号</view>
+          <view class='phoneRight'>
+             <input type='number' placeholder='请输入手机号'></input>
+          </view>
+      </view>
+       <view class="dataList border-top">
+          <view class='phoneLeft'>验证码</view>
+          <view class='phoneRight phoneVerificationCodeRight'>
+             <input type='number' placeholder='请输入验证码'></input>
+          </view>
+          <view class='phoneVerificationCode'>
+              <text>获取验证码</text>
+          </view>
+      </view>
+  </view>
+
+  <!--服务协议-->
+  <view class='intrduceBox'>
+    <checkbox-group bindchange="checkboxChange">
+      <label class="checkbox" wx:key="property" wx:for="{{items}}">
+        <checkbox color='#999' value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+      </label>
+      本人已了解保险产品，同意并接受<navigator url=''>《保险条款》</navigator>,<navigator>《重要通知》</navigator>，<navigator url='/pages/healthTold/healthTold'>《健康告知》 </navigator>，<navigator>《投保提示书》 </navigator>，<navigator>《人身保险伤残评定标准》</navigator>，了解并接受包括有关条款及责任免除，承保地域限制，退保，投保人，被保险人义务的约定。
+    </checkbox-group>
+  </view>
+  <!--立即投保  -->
+  <view class='kefuBox tab'>
+        <!--<view><icon class='iconfont icon-kefu'></icon><text class='kefuText'>客服</text></view>-->
+      <view class="tab-right" >   
+        {{price}} <text class='money'>元</text>
+      </view>  
+      <view bindtap='immediatelyInsure'> 立即投保</view>
+  </view>
+  <view class="modal" hidden="{{modalFlag}}"></view>
+   <loading hidden="{{loadingHidden}}">
+        加载中...
+    </loading>
+</view>

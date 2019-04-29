@@ -1,0 +1,214 @@
+/* pages/memberHome/memberHome.wxss */
+.logoBox{
+  background: #fff;
+  padding-top: 54rpx;
+}
+.headerBox{
+  width: 100%;
+  height: 68rpx;
+  line-height: 68rpx;
+  text-align: center;
+}
+.logo{
+  width: 72rpx;
+  height: 68rpx;
+  float: left;
+  margin-left: 261rpx;
+}
+.headerTx{
+  float: left;
+  margin-left: 25rpx;
+}
+
+/*登录/注册*/
+.loginBox{
+  width: 100%;
+  height: 180rpx;
+  border-bottom: 3rpx solid #e6e6e6;
+  text-align: center;
+  color: #ffaf3e;
+  padding-top: 52rpx;
+  box-sizing: border-box;
+  margin-bottom: 3rpx;
+}
+.login{
+  color: #ffaf3e;
+}
+.loginReg{
+  width: 302rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  border: 3rpx solid #ffaf3e;
+  border-radius: 8rpx;
+  margin:  0 auto;
+}
+.loginLin{
+  margin: 0 14rpx;
+}
+
+/*我的保单*/
+.mypolicyBox{
+  color: #333;
+  width: 100%;
+  height:100rpx;
+  margin-bottom: 30rpx;
+  background: #fff;
+}
+.mypolicy{
+  display: flex;
+  line-height: 100rpx;
+  padding: 0 30rpx;
+  font-size: 52rpx;
+  }
+  .mypolicy>text{
+    font-size: 25rpx;
+  }
+.mypolicy text:nth-of-type(1){
+   flex: 1; 
+   text-align: left;
+   margin-left: 32rpx;
+
+}
+.mypolicy text:nth-of-type(2){
+   flex: 1; 
+   text-align: right;
+}
+
+/*底部*/
+/**.footerBox{
+  width: 100%;
+  height: 100rpx;
+  background: #fff;
+  display: flex;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  font-size: 20rpx;
+  padding-top: 13rpx;
+  box-sizing: border-box;
+}**/
+.footerLeft i{
+    display: block;
+    font-size: 51rpx;
+}
+.footerRight{
+  text-align: center;
+  flex: 1;
+}
+.footerLeft{
+  text-align: center;
+  flex: 1;
+}
+.footerRight i{
+    display: block;
+    font-size: 40rpx;
+    margin-top: 11rpx;
+}
+
+/*弹出层*/
+.modal{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+  display: block;
+}
+.modalBox{
+  position:absolute;
+top:256rpx;
+left:46rpx;
+width:660rpx;
+background:#fff;
+margin:auto auto;
+border-radius:10rpx;
+padding:48rpx;
+box-sizing:border-box;
+
+}
+.cel{
+  color: #999;
+  float: right;
+  display: inline-block;
+  width: 80rpx;
+  height: 80rpx;
+}
+.modalHeader{
+  font-size: 30rpx;
+  color: #333;
+  text-align: center;
+}
+.phoneBox{
+  width: 100%;
+  height: 96rpx;
+  color: #999;
+  padding-top: 36rpx;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid #dfdfdf;
+}
+.numBox{
+  width: 100%;
+  height: 96rpx;
+  border-bottom: 1rpx solid #dfdfdf;
+  display: flex;
+  line-height: 96rpx;
+}
+.numBox input{
+  flex: 1;
+  margin-top: 25rpx;
+}
+.numBox text{
+  flex: 0.5;
+  text-align: right;
+  font-size: 28rpx;
+  color: #ffaf3e;
+}
+.place{
+  color: #999;
+  font-size: 28rpx;
+}
+.btn{
+  background: #ffaf3e;
+  color: #fff;
+  height: 80rpx;
+  font-size: 35rpx;
+  margin-top: 40rpx;
+  line-height: 80rpx;
+  border-radius: 10rpx;
+  text-align: center
+  }
+.btnColor{
+  color: #fff;
+  width: 100%;
+  background: #ffaf3e;
+} 
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
+
+/**用户头像**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}

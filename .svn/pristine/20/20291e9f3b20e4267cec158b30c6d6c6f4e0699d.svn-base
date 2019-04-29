@@ -1,0 +1,119 @@
+/**index.wxss**/
+.container{
+  width: 100%;
+  height: 100%;
+}
+.panic{
+  position: absolute;
+  right: 92rpx;
+  bottom: 75rpx;
+  display: block;
+  font-size: 36rpx;
+  color: #ffaf3e;
+  border: 2rpx solid #ffaf3e;
+  padding: 16rpx 30rpx;
+  background: #fff;
+  border-radius: 10rpx;
+}
+.img{
+  width: 100%;
+  height: 100%;
+  -webkit-filter:saturate(1);
+}
+
+.swiperBox{
+  position: absolute;
+  bottom:0rpx;
+  left: 0rpx;
+  width: 100%;
+  border-radius: 10rpx;
+  padding-bottom: 30rpx;
+}
+swiper-item{
+/* padding: 30rpx; */
+padding-bottom: 50rpx;
+}
+.slide-image{
+  width: 676rpx;
+  height: 280rpx;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+  position: absolute;
+  bottom:90rpx;
+  left: 30rpx;
+}
+
+swiper-container{  
+  position: relative;  
+}  
+.swiper-container .swiper{  
+  height: 300rpx;  
+}  
+.swiper-container .swiper .img{  
+  width: 100%;  
+  height: 100%;  
+}  
+.swiper-container .dots{  
+  position: absolute;  
+  left: 0;  
+  right: 0;  
+  bottom: 12rpx;  
+  display: flex;  
+  justify-content: center;  
+}  
+.swiper-container .dots .dot{  
+  margin: 0 8rpx;
+  width:14rpx;  
+  height: 14rpx;  
+  background: #999;  
+  border-radius: 8rpx;  
+  transition: all .6s;  
+}  
+.swiper-container .dots .dot.active{  
+  width: 14rpx;  
+  background: #f80;  
+}  
+.tabTextBox{
+  position:absolute;
+  top:10rpx;
+  right:20rpx;
+  display:flex;
+  flex-direction:column;
+  font-size:30rpx;
+  font-weight: 600;
+}
+.tabTextBox text{
+  width: 350rpx;
+  flex: 1;
+  line-height: 50rpx;
+  text-align: center;
+}
+.tabTextBox text:nth-of-type(1){
+  margin-left:88rpx;
+  font-size:34rpx;
+  margin-top: 20rpx;
+  color: #1f182d;
+  letter-spacing:1rpx;
+}
+.tabTextBox text:nth-of-type(2){
+  margin-left:96rpx;
+  font-size:30rpx;
+  color: #676363;
+
+}
+.tabTextBox text:nth-of-type(3){
+  margin-left:120rpx;
+  margin-top:10rpx;
+  color: #999;
+}
+.tabTextBox text:nth-of-type(4){
+  width:180rpx;
+  height:46rpx;
+  border:1px solid #f3b256;
+  text-align: center;
+  line-height:53rpx;  
+  border-radius: 5rpx; 
+  color: #f3b256;
+  margin-left: 200rpx;
+  margin-top: 20rpx
+}

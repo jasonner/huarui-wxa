@@ -1,0 +1,42 @@
+/* pages/failure/failure.wxss */
+page{
+  background:#fff;
+  width: 100%;
+  height: 100%;
+}
+.content{
+  padding:60rpx; 
+  box-sizing: border-box;
+}
+#resultImg{
+  width: 350rpx;
+}
+#confirm{
+  background: #f3b256;
+}
+#resultImg{
+  margin-bottom: 30rpx;
+}
+#payResult{
+  text-align: center;
+  color: #333;
+}
+.item-content>text{
+  color: #333;
+}
+#payResult .productName{
+  padding: 20rpx;
+}
+#payInfo{
+  position:relative;
+  margin: 50rpx 0;
+}
+#payInfo .itemlist{
+  position:absolute;
+  top:50rpx;
+  left:30rpx
+}
+#payInfo .item-content{
+  padding: 20rpx 0;
+  color: #999;
+}

@@ -1,0 +1,32 @@
+<!--index.wxml-->
+<!--banner-->
+<view class='containerBox'>
+  <view class="content">
+  <!-- 支付成功 -->
+    <view id='payResult' hidden='{{!orderStateInfo}}'>
+        <image id='resultImg' src="../../assets/images/result/suc.png" mode="widthFix"></image>
+         <view>{{payState}}</view>
+    </view>
+    <!-- 支付失败 -->
+    <view id='payResult' hidden='{{orderStateInfo}}'>
+        <image id='resultImg' src="../../assets/images/failure/failure.png"  mode="widthFix"></image>
+        <view>{{payState}}</view>
+    </view>
+
+    <view id='payInfo'>
+        <image class='img' src='../../assets/images/result/msgBG.png' style='width:100%'></image>
+        <view class="itemlist">
+          <view class='item-content'>投保单号：<text>{{applicationNo}}</text></view>
+          <view class='item-content'>被保险人：<text>{{insuredName}}</text></view>
+          <view class='item-content'>保险期间：<text>{{insurePeriod}}</text></view>
+          <view class='item-content'>支付金额：<text>{{payMoney}}元</text></view>
+        </view>
+    </view>
+
+
+    <button id="confirm" type="primary" size="default" loading="{{false}}" plain="{{false}}"
+          disabled="{{false}}" bindtap="primary">点击查看电子保单 </button>
+  </view>
+
+
+</view>

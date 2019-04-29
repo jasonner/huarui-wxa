@@ -1,0 +1,103 @@
+/**app.wxss**/
+/**.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+page{
+  height: 100%;
+  width: 100%;
+}**/
+
+/**app.wxss**/
+@import "assets/fonts/iconfont.wxss";
+/**@import "./style/style.wxss";**/
+page{
+   font-family: PingFang SC, Helvetica Neue, Helvetica, Arial, sans-serif;
+   width: 100%;
+   height: 100%;
+   background: #efefef;
+}
+.container {
+  height: 100%;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+} 
+.containerBox{
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background-color: #f1f0f5;
+    font-size: 30rpx;
+}
+navigator{
+  color: #1c96df;
+  display: inline-block;
+}
+.active{
+  color: #f3b256;
+}
+/* 加载遮罩层 */
+.loadingModal{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background:#fff;
+  opacity: 1;
+  z-index: 100;
+}
+/* 普通遮罩层 */
+.modal{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background:#000;
+  opacity: 0.3;
+  z-index: 100;
+}
+.loding-img {
+  width: 120rpx;
+  height: 120rpx;
+  position: absolute;
+  top: 38%;
+  left: 40%; 
+  z-index: 100;
+  opacity: 0.6;
+  }
+.loding-img  image{
+ width: 120rpx;
+  height: 120rpx;
+  position: absolute;
+  top: 38%;
+  left: 40%; 
+  z-index: 10;
+}
+/*错误信息提示 */
+.tipErr{
+    background: #000;
+    color: #fff;
+    position:fixed;
+    left: 30%;
+    top: 36%;
+    padding: 20rpx;
+    border-radius: 5rpx;
+    opacity: 0.5;
+}

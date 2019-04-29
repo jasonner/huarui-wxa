@@ -1,0 +1,31 @@
+<!--index.wxml-->
+<!--banner-->
+<view class='containerBox'>
+  <view class="content-title"></view>
+  <view class='selectBox'>
+      <view class='dataList border-top'>
+        <view class="section__title left">产品名称</view>
+        <view class="section right">儿童及成人长期重疾险</view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left">支付金额</view>
+        <view class="section right"><text class="orderAmount">100.00</text>元</view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left">
+         <icon class='iconfont icon-weixinzhifu' color='#0af126' style='color:#18f432;font-size:24rpx;'></icon>
+        微信支付
+        </view>
+        <view class="section right"><text class="iconfont icon-duihao" style='color:#f3b256'></text></view>
+      </view>
+  </view>
+  <view class="content-title"></view>
+
+  <view class="content-block">
+    <navigator style='color:#fff' style='width:100%' url='/pages/failure/failure'> 
+      <button id="confirmBuy" type="primary" size="default" loading="{{false}}" plain="{{false}}"
+          disabled="{{false}}" bindtap="primary"> 支付 </button>
+     </navigator> 
+  </view>
+
+</view>

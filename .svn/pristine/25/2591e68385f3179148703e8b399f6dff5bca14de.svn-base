@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/productDetail/productDetail",
+    "pages/failure/failure",
+    "pages/myPolicy/myPolicy",
+    "pages/insure/insure",
+    "pages/payAndSign/payAndSign",
+    "pages/result/result",
+    "pages/orderDetail/orderDetail",
+    "pages/healthTold/healthTold",
+    "pages/memberHome/memberHome",
+    "pages/user/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "selectedColor": "#f3b256",
+    "list": [
+      {
+        "iconPath": "./pages/index/img/indexN.png",
+        "selectedIconPath": "./pages/index/img/index.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "./pages/index/img/myN.png",
+        "selectedIconPath": "./pages/index/img/my.png",
+        "pagePath": "pages/memberHome/memberHome",
+        "text": "我的"
+      }
+    ],
+    "debug": true
+  }
+}

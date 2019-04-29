@@ -1,0 +1,6 @@
+<!--pages/healthTold/healthTold.wxml-->
+<web-view src='{{href}}'></web-view>
+<!-- <rich-text type = "node" nodes="{{nodes}}" bindtap="tap"></rich-text> -->
+<view class="classname">  
+<rich-text nodes="{{nodes}}" bindtap="tap"></rich-text>  
+</view> 

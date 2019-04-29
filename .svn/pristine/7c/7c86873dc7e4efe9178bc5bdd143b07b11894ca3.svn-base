@@ -1,0 +1,252 @@
+const hrp = require('../../api/hrp.js');
+import http from '../../utils/http.js';
+const app = getApp();
+var productDetailInfo = app.globalData.productDetailInfo;
+var buyInfo = app.globalData.buyInfo;//购买信息
+var orderInfo = app.globalData.orderInfo;//订单信息
+var insuredInfo = app.globalData.insuredInfo;//被保人信息
+var selfRelationFlag = app.globalData.selfRelationFlag//是否只支持本人购买
+var isLogin = false;//登录标志
+Page({
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    //banner图片数据
+    bannerInfo: [],
+
+    //产品优势
+    productAdvantageInfo: [],
+
+    //保障计划
+    safeguardPlansInfo: [
+      {
+        planDesc: []
+      }
+    ],
+
+    //产品优势
+    titleArr: '',
+
+    //产品productcode
+    tabArr: {
+      curHdIndex: 2258,
+      curBdIndex: 2258
+    },
+
+    //默认产品份数
+    fewNum: 1,
+
+    //保障期间默认时间
+    Protectiontext: "",
+
+    //生效日期默认时间
+    effectiveDate: "",
+
+    //性别是否展示
+    sexShow: true,
+
+    //性别数据
+    sexSelect: ['男', '女'], 
+
+    //被保人出生日期是否展示
+    BirthdayShow: true,
+
+    //初始化被保人生日
+    initialBirthday: "",
+
+    //遮罩层
+    modelShow: true,
+
+    //条款弹层 
+    clauseShow: true,
+
+    //保费
+    price: 0,
+
+    //缴费期间显示初始化
+    initialPremiumPaymentPeriod: "",
+
+    //缴费期间数据
+    PremiumPaymentPeriodData: [],
+
+    //缴费期间是否固定可选
+    PayDataChangeSelectNo: true,
+
+    //缴费期间是否显示
+    PayDataShow: true,
+
+    //保障期间数据
+    Protection: [],
+    //保障期间是否显示
+    ProtectionShow: true,
+
+    //保障期间是否可选
+    ProtectionDataChangeNO: true,
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    var that = this;
+    console.log(options);
+    orderInfo.itemCode = options.itemCode
+    http.all([hrp.productInfo({//请求产品数据
+      itemCode: options.itemCode
+    })]).then((data) => {
+      console.log(data);
+      var data  = data[0];
+      //初始化banner图渲染
+      this.initBannerInfo(data);
+
+      //初始化产品优势渲染
+      this.initProductAdvantageInfo(data);
+
+      //初始化保障计划标签
+      this.initPlanTab(data);
+      
+      //初始化保障计划详情渲染
+      this.initInsureDetail(data);
+
+      //初始化份数渲染
+      this.initMult(data.data);
+      //初始化缴费期间渲染
+      this.initPayInterval(data);
+
+      //初始化保障期间渲染
+      this.initInsurePeroid(data);
+
+      //初始化生效日期渲染
+      this.initCvalidate(data);
+
+      //初始化被保人性别渲染
+      this.initSex(data);
+
+      //初始化积分抵扣渲染
+      this.initPointsDeduction(data);
+
+    })
+  },
+
+  //初始化banner图渲染
+  initBannerInfo: function (productDetailInfo){
+    console.log(productDetailInfo);
+    this.setData({
+      bannerInfo: [
+        {
+          'productName': productDetailInfo.productName,
+          "productImageUrl": productDetailInfo.bannerInfo.productImageUrl,
+          'organizationName': productDetailInfo.bannerInfo.organizationName,
+          'salesMult': productDetailInfo.bannerInfo.salesMult
+        }
+      ]
+    })
+  },
+
+  //初始化产品优势渲染
+  initProductAdvantageInfo:function(){
+    this.setData({
+      titleArr: ['交20年保20年，定制期限，价格恒定', '身故返保费，首年赠绿通及抗癌检测']
+    })
+  },
+
+  //初始化保障计划标签
+  initPlanTab: function (productDetailInfo){
+    console.log()
+    this.setData({
+      safeguardPlansInfo: productDetailInfo.safeguardPlansInfo
+    });
+    // 3.产品渲染
+    this.setData({
+      safeguardPlansInfo: productDetailInfo.safeguardPlansInfo
+    })
+    // 3.1产品 默认选择
+    for (var i = 0; i < productDetailInfo.safeguardPlansInfo.length; i++) {
+      if (productDetailInfo.safeguardPlansInfo[i].productCode == productDetailInfo.productCode) {
+        this.setData({
+          tabArr: {//产品productcode
+            curHdIndex: productDetailInfo.safeguardPlansInfo[i].productCode,
+            curBdIndex: productDetailInfo.safeguardPlansInfo[i].productCode
+          },
+        })
+        wx.setStorage({//获取产品下标
+          key: "productId",
+          data: i
+        })
+        buyInfo.planName = productDetailInfo.safeguardPlansInfo[i].planName
+      }
+    }
+    wx.setStorage({
+      key: 'productCode',
+      data: productDetailInfo.productCode,
+    })
+
+    orderInfo.productCode = productDetailInfo.productCode//获取初始化产品的序号
+    console.log(orderInfo.productCode)
+    //判断产品数量是否为0，如果为0则产品不展示，否则反之；
+    console.log(productDetailInfo.safeguardPlansInfo)
+    if (productDetailInfo.safeguardPlansInfo[0].productCode == "") {
+      this.setData({
+        productListShow: false
+      })
+    } else {
+      this.setData({
+        productListShow: true
+      })
+    }
+  },
+
+  //初始化保障计划详情渲染
+  initInsureDetail: function (productDetailInfo){
+    this.setData({
+      'planDesc': productDetailInfo.safeguardPlansInfo[0].planDesc
+    }) 
+  },
+
+  //初始化份数渲染
+  initMult:function(){
+    if (productDetailInfo.insureInfo.maxMult == "1") {//判断份数是否显示
+      this.setData({
+        mult: productDetailInfo.insureInfo.maxMult,
+        fewNumShow: false
+      })
+      insureInfo.mult = productDetailInfo.insureInfo.maxMult
+    } else {
+      this.setData({
+        fewNumShow: true
+      })
+      wx.setStorage({
+        key: 'fewNum',
+        data: 1,
+      })
+    }
+  },
+
+  //初始化缴费期间渲染
+  initPayInterval:function(){
+  
+  },
+
+   //初始化保障期间渲染
+  initInsurePeroid:function(){
+
+  },
+
+  //初始化生效日期渲染
+  initCvalidate:function(){
+
+  },
+
+  //初始化被保人性别渲染
+  initSex:function(){
+
+  },
+
+  //初始化积分抵扣渲染
+  initPointsDeduction:function(){
+
+  }
+
+
+})

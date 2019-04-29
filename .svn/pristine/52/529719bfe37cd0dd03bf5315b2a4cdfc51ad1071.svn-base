@@ -1,0 +1,92 @@
+//index.js
+//获取应用实例
+const app = getApp()
+const hrp = require('../../api/hrp.js')
+import http from '../../utils/http.js'
+Page({
+  data: {
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    productInfo: {},//存放产品列表信息：产品名称，产品链接，产品描述，产品图片自身地址
+    imgUrl: '', //首页背景图片
+    swiperCurrent: 0,  //当前轮播图
+    indicatorDots: true,
+    vertical: false,
+    autoplay:false,
+    loop:true,
+    interval: 3000,
+    duration: 1000,
+    loadingHidden: false,  // loading
+    isLogin: app.globalData.isLogin, //判断登录状态(微信)
+  },
+
+  onLoad: function () {
+    //查询首页信息
+    hrp.homeAInfo({}).then((data) => {
+      console.log(data)
+      this.setData({
+        imgUrl: data.imgUrl,
+        productInfo: data.productList
+      })
+     
+    })
+    
+    // if (app.globalData.userInfo) {
+    //   console.log(app.globalData.userInfo)
+    //   this.setData({
+    //     userInfo: app.globalData.userInfo,
+    //     hasUserInfo: true
+    //   })
+    // } else if (this.data.canIUse){
+    //   // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+    //   // 所以此处加入 callback 以防止这种情况
+    //   app.userInfoReadyCallback = res => {
+    //     this.setData({
+    //       userInfo: res.userInfo,
+    //       hasUserInfo: true
+    //     })
+    //   }
+    // } else {
+    //   // 在没有 open-type=getUserInfo 版本的兼容处理
+    //   wx.getUserInfo({
+    //     success: res => {
+    //       app.globalData.userInfo = res.userInfo
+    //       this.setData({
+    //         userInfo: res.userInfo,
+    //         hasUserInfo: true
+    //       })
+    //     }
+    //   })
+    // }
+  },
+  // 改变轮播变换按钮
+  changeIndicatorDots: function (e) {
+    this.setData({
+      indicatorDots: !this.data.indicatorDots
+    })
+  },
+
+  changeAutoplay: function (e) {
+    this.setData({
+      autoplay: !this.data.autoplay
+    })
+  },
+  intervalChange: function (e) {
+    this.setData({
+      interval: e.detail.value
+    })
+  },
+  // 获取当前轮播图，设置轮播按钮
+  swiperChange: function (e) {
+    this.setData({
+      swiperCurrent: e.detail.current
+    })
+  },  
+  
+  durationChange: function (e) {
+    this.setData({
+      duration: e.detail.value
+    })
+  }
+})

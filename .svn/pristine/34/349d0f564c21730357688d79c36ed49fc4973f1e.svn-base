@@ -1,0 +1,455 @@
+// pages/demo/demo.js
+const hrp = require('../../api/hrp.js');
+import http from '../../utils/http.js';
+const customer = require('../../api/customer.js')
+const app = getApp();
+
+var insureInfoDetail = app.globalData.insureInfoDetail;//销售计划信息
+var buyInfo = app.globalData.buyInfo;//购买信息
+var orderInfo = app.globalData.orderInfo;//订单信息
+var insuredInfo = app.globalData.insuredInfo;//被保人信息
+var username = "";//用户名
+var userId = "";//用户ID
+var userPhoneNum = "";//用户手机号
+var underwritingFlag = false;//核保标志
+var customerInfo = null;
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    userInfo: {},
+    hasUserInfo: false,
+
+    //投保人姓名
+    appntName: "",
+
+    //投保人姓名是否可以更改
+    appntNameDisable:true,
+
+    //错误提示
+    tipErrShow: true,
+
+    //初始化与被保人关系
+    relationToAppnt: [],
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    //获取用户信息
+    customer.getCustomInfo({
+      isUserId:1,
+      idAuthState:1
+    }).then((data) =>{
+      console.log(data);
+      customerInfo = data;
+
+      //初始化投保人信息
+      this.initAppntInfo();
+
+      //初始化被保人信息
+       this.initInsuredInfo();
+
+      //初始化受益人信息
+      this.initBnfInfo();
+
+      //初始化抵扣信息
+      this.initPointsDeduction();
+
+      // //标的信息
+      // this.initTargetInfo();
+
+      // //初始化底部保费信息
+      // this.initFooterInfo();
+
+    })
+  },
+
+  //初始化投保人信息
+  initAppntInfo:function(){
+    /*
+    * 1.如果customerInfo有姓名+身份证号，+身份证号使用customerInfo的姓名；不可修改
+    * 2.如果customerInfo没有姓名+身份证号，使用投保录入信息中投保人信息的姓名+身份证号；可以修改
+    * 当2的情况下身份证号变更了，判断页面选择的关系
+    * 如果没选择，不去计算保费
+    * 如果选择的是本人+customerInfo没有姓名+身份证号，使用投保人的身份证号调用保费计算方法
+    * 如果选择的是其他，不去计算保费
+    */
+    var userName = customerInfo.realName;
+    // var userName = "吴杰";
+
+    var idNo = customerInfo.idnoStar;
+    // var idNo = "62262819920310235X";
+
+    var mobile = customerInfo.mobileStar;
+    // var mobile = "13516287185";
+
+    if(userName != "" && userName){
+        this.setData({
+          appntNameDisable: true,
+          appntName: userName
+        })
+        insuredInfo.insuredName = userName;
+    }else{
+      this.setData({
+        appntNameDisable: false,
+      })
+    }
+
+    if(idNo != "" && idNo){
+
+      this.setData({
+        appntIdDisable: true,
+        appntId: idNo
+      })
+      insuredInfo.idNo = idNo;
+
+    }else{
+
+      this.setData({
+        appntIdDisable:false,
+      })
+
+    }
+
+    if (mobile != "" && mobile){
+
+      this.setData({
+        appntPhoneNumDisable: true,
+        appentPhoneNumber: mobile
+      })
+
+      insuredInfo.mobile = mobile;
+    }else{
+
+      this.setData({
+        appntPhoneNumDisable: false
+      })
+
+    }
+  }, 
+  
+  //录入投保人姓名
+  getAppntName:function(e){
+    var that = this;
+    var appntName = e.detail.value
+    if (appntName == "") {
+      underwritingFlag = false;//核保标志      
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入投保人姓名"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000)
+    } else {
+      underwritingFlag = true;
+      insuredInfo.insuredName = appntName;
+      this.setData({
+        tipErrShow: true
+      })
+    }
+  },
+
+  //录入投保人身份证号
+  getAppntId:function(e){
+    var that = this;
+    var appenId = e.detail.value;
+    var userIdLength = appenId.length;
+    var result = that.isCardNo(appenId);
+    if (!result) {
+      underwritingFlag = false;
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入正确的身份证号"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000)
+    } else {
+      var year = that.substring(appenId, 6, 10);
+      console.log(year);
+      var month = that.substring(appenId, 10, 12);
+      var day = that.substring(appenId, 12, 14);
+      var appentSex = appenId.substr(16, 1) % 2 == 0 ? 2 : 1;
+      console.log(year + "年" + month + "月" + day + "日" + appentSex +"性别");
+      var userBirthday = year + "-" + month + "-" + day;
+      console.log("用户出生日期为:" + userBirthday);
+      buyInfo.birthday = userBirthday;
+      this.setData({
+        tipErrShow: true,
+      })
+      insuredInfo.insuredIdNo = appenId;
+      insuredInfo.insureSex = appentSex;
+    }
+  },
+
+  //录入投保人手机号
+  getAppntPhoneNum:function(e){
+    var that = this;
+    var appentPhoneNum = e.detail.value;
+    console.log(appentPhoneNum);
+    var sMobile = this.checkMobile(appentPhoneNum);
+    if (!sMobile) {
+      underwritingFlag = false
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入正确的手机号"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000);
+    } else {
+      underwritingFlag = true;
+      this.setData({
+        tipErrShow: true
+      })
+      insuredInfo.mobile = appentPhoneNum;
+    }
+  },
+  
+  //初始化被保人信息
+  initInsuredInfo:function(){
+    var that = this;
+    /*
+    * 1.如果关系只支持本人，不展示被保人姓名+证件号
+    * 2.如果关系不只支持本人，展示关系选择选项,当选择关系为其他时，展示被保人姓名+证件号录入项
+    * 触发：
+    * 当被保人身份证号变更了，去计算保费
+    * 当关系变更了，判断关系
+    * 如果是本人，使用投保人的身份证号调用保费计算方法
+    * 如果是其他，使用被保人的身份证号调用保费计算方法
+    */
+    wx.getStorage({
+      key: 'insureInfoDetail',
+      success: function(res) {
+            insureInfoDetail = res.data;
+        if (insureInfoDetail.insuredType == "1") { // 仅支持本人
+          that.setData({
+            insuredDisable: true
+          })
+        } else if (insureInfoDetail.insuredType == "2") {
+          var arr = [];
+
+          if (insureInfoDetail.relationToAppnt.length == 1) {
+            
+            arr.push(insureInfoDetail.relationToAppnt[0].text);
+
+            if (insureInfoDetail.relationToAppnt[0].value == "00") {
+
+              that.setData({
+                relationToAppnt: arr,
+                insuredDisable:true
+              })
+
+            } else {
+              that.setData({
+                relationToAppnt: arr,
+                insuredDisable: false
+              })
+            }
+          }else{
+        
+            for (var i = 0; i < insureInfoDetail.relationToAppnt.length;i++){
+                arr.push(insureInfoDetail.relationToAppnt[i].text);
+            }
+
+            that.setData({
+              relationToAppnt:arr,
+              insuredDisable:false
+            }) 
+
+          }
+           
+        }
+      },
+    })
+  },
+
+  //录入被保人姓名
+  getRecognizeeName: function (e) {
+    var that = this;
+    var recognizeeName = e.detail.value
+    if (recognizeeName == "") {
+      underwritingFlag = false;//核保标志      
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入被保人姓名"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000)
+    } else {
+      underwritingFlag = true;
+      insuredInfo.recognizeeName = recognizeeName;
+      this.setData({
+        tipErrShow: true
+      })
+    }
+  }, 
+
+  //录入被保人ID
+  getRecognizeeId:function(e){
+    var that = this;
+    var recognizeeId = e.detail.value;
+    var userIdLength = recognizeeId.length;
+    var result = that.isCardNo(recognizeeId);
+    if (!result) {
+      underwritingFlag = false;
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入正确的身份证号"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000)
+    } else {
+      var year = that.substring(recognizeeId, 6, 10);
+      console.log(year);
+      var month = that.substring(recognizeeId, 10, 12);
+      var day = that.substring(recognizeeId, 12, 14);
+      var recognizeeSex = recognizeeId.substr(16, 1) % 2 == 0 ? 2 : 1;
+      console.log(year + "年" + month + "月" + day + "日" + recognizeeSex + "性别");
+      var userBirthday = year + "-" + month + "-" + day;
+      console.log("用户出生日期为:" + userBirthday);
+      buyInfo.birthday = userBirthday;
+      this.setData({
+        tipErrShow: true,
+      })
+      insuredInfo.recognizeeIdNo = recognizeeId;
+      insuredInfo.recognizeeSex = recognizeeSex;
+    }
+  },
+
+  //初始化受益人信息
+  initBnfInfo:function(){
+    var that = this;
+    wx.getStorage({
+      key: 'insureInfoDetail',
+      success: function(res) {
+        var insureInfoDetail = res.data;
+        that.setData({
+          bnfName: insureInfoDetail.bnfType.text,
+          bnfType: insureInfoDetail.bnfType.value
+        }) 
+      },
+    })
+  },
+
+   //初始化积分抵扣 
+  initPointsDeduction:function(){
+
+    if (buyInfo.isPoint) {
+
+      this.setData({
+        price: parseFloat(buyInfo.payMoney).toFixed(2)
+      });
+      buyInfo.isOpen = true;
+
+    } else {
+
+      this.setData({
+        price: parseFloat(orderInfo.orderAmount).toFixed(2)
+      });
+      buyInfo.isOpen = false;
+    } 
+
+  },
+
+  //初始化标的信息
+  initTargetInfo:function(){
+    
+  },
+
+  //被保人关系信息改变
+  bindPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value);
+    this.setData({
+      index: e.detail.value
+    })
+    var relationAppnt = e.detail.value;
+    //  this.changeRelation(e.detail.value);
+  },
+
+
+  // 立即投保
+  insureBTN: function (options) {
+    console.log(insuredInfo.insuredIdNo + "：投保人手机号");
+    console.log(insuredInfo.insuredName + "：投保人姓名");
+    console.log(insuredInfo.mobile+"投保人手机号");
+    console.log(underwritingFlag);
+    if (buyInfo.recognizeeName && buyInfo.recognizeeName != "" || buyInfo.birthday && buyInfo.birthday != "") {
+    }
+    console.log(orderInfo);
+    console.log(insuredInfo)
+    hrp.underwriting({
+      orderInfo: orderInfo,
+      insuredInfo: insuredInfo
+    }).then((data) => {
+      console.log(data);
+    })
+  },
+
+  //用户身份证验证
+  isCardNo:function (card){  
+    // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X  
+    var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
+    console.log(reg.test(card)) 
+    if(reg.test(card) === false) {
+      return false;
+    }else{
+      return true;
+    }
+  },
+
+  //用户手机号验证
+  checkMobile: function (sMobile){ 
+    if (!(/^1[34578]\d{9}$/.test(sMobile))){ 
+      return false;
+    }else{
+      return true;
+    } 
+  }, 
+
+  //截取用户身份证出生日期
+  substring:function(str,n,m){
+    var res=str.substring(n,m);
+    return res;
+  },
+
+  // 校验年龄范围
+  checkInsurdBirth:function (birthday){
+    if(new Date(buyInfo.insuredEndDate).getTime() >= new Date(birthday).getTime() && new Date(birthday).getTime() >= new Date(buyInfo.insuredBeginDate).getTime()) {
+        return true;
+    } else {
+             //$.alertMessage("请确认被保险人年龄在可保范围内");
+        this.setData({
+          tipErrText:"请确认被保险人年龄在可保范围内"
+        })  
+        return false;
+    }
+  },
+  
+})

@@ -1,0 +1,21 @@
+import http from '../utils/http.js'
+import config from'../env/config.js'
+
+const URL = config.hrp_server_url
+console.log(http)
+console.log(URL)
+module.exports = {
+  // homeInfo: (params) => http.get(URL + '/home/info', { data: params })
+  homeInfo: (params) => http.get(URL + '/home/info', { data: params }),
+  productInfo: (params) => http.get(URL + '/safeguard/insure/getProductDetail', { data: params }), //产品详情页面产品接口
+  // http(s)://xxxxxx.com/restful/hrp/safeguard/underWrite
+  underwriting: (params) => http.get(URL +'/safeguard/underWrite',{data:params}),//投保信息确认页面核保接口
+  homeAInfo: (params) => http.get(URL + '/home/wxaInfo', { data: params }),//首页接口
+  noticeInfo: (params) => http.post(URL + '/notice/info', { data: params, header: { 'content-type':'application/json;charset=UTF-8'} }),
+  orderDetail: (params) => http.get(URL + '/safeguard/order/detail', { data: params, header: { 'content-type': 'application/json;charset=UTF-8' } }),//订单明细
+  orderList: (params) => http.get(URL + '/safeguard/order/list', { data: params, header: { 'content-type': 'application/json;charset=UTF-8' } }),//订单列表
+  orderMock: (params) => http.get('http://192.168.137.39:3000/mock/wxa/wxa.json', { data: params }),//订单列表测试mock
+  resultPage: (params) => http.get('http://192.168.137.39:3000/mock/wxa/result.json', { data: params }),//支付结果页测试mock
+  payInfo: (params) => http.get(URL + '/insure/payInfo', { data: params, header: { 'content-type': 'application/json;charset=UTF-8' } }),//支付信息查询
+  
+}

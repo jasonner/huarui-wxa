@@ -1,0 +1,55 @@
+<!--pages/policyDetails/policyDetails.wxml-->
+<view class='containerBox'>
+  <view class='listBox'>
+    <view class='list'>
+          <view>定单号</view>
+          <view>{{urlParams.applicationNo}}</view> 
+    </view>
+    <view class='list'>
+          <view>保险名称</view>
+          <view>{{orderBase.productName}}</view> 
+    </view>
+
+    <view >
+      <view class='list'>
+          <view>保险公司</view>
+          <view>{{providerName}}</view> 
+      </view>
+    
+      <view class='list' >
+          <view>投保人</view>
+          <view>{{appntName}}</view> 
+      </view>
+      <view class='list'>
+          <view>被保人</view>
+          <view>{{insuredName}}</view> 
+      </view>
+      <view class='list'>
+          <view>受益人</view>
+          <view>法定</view> 
+      </view>
+
+    </view>
+        
+    <view class='list'>
+          <view>保费总额</view>
+          <view style='color:#ff0000'>{{orderBase.orderAmount}}元</view> 
+    </view>
+  </view>
+  <view class='intrduceTitle list'>保障简介</view>
+    <view class='intrduceBox' wx:key="contDetails" wx:for="{{contDetails}}">
+      <view class='list'>
+          <view>保障项目</view>
+          <view>保额</view>
+      </view>
+      <view class='list'wx:key="riskDutys" wx:for="{{item.riskDutys}}">
+          <view>{{item.dutyName}}</view>
+          <view>{{item.dutyAmount}}</view>
+      </view>
+  </view>
+</view>
+<view class='loadingModal' hidden='{{loadingModelShow}}'></view> 
+<loading hidden="{{loadingHidden}}">
+加载中...
+</loading> 
+

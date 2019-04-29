@@ -1,0 +1,62 @@
+<!--pages/policyDetails/policyDetails.wxml-->
+<view class='containerBox'>
+      <!--<view class='headerBox'>
+            <view class='headerLeft'>
+                  <text>儿童及成人长期重疾险</text>
+                  <text>
+                 10601084029393020897687
+                  </text>
+            </view> 
+            <view class='headerRight'>
+                <image class='policyImg' src='img/policy.png'></image>
+            </view> 
+      </view>-->
+      <view class='listBox'>
+            <view class='list'>
+                 <view>定单号</view>
+                 <view>{{urlParams.applicationNo}}</view> 
+            </view>
+            <view class='list'>
+                 <view>保险名称</view>
+                 <view>{{orderBase.productName}}</view> 
+            </view>
+
+            <view wx:for="{{contDetails}}">
+              <view class='list'>
+                 <view>保险公司</view>
+                 <view>{{item.providerName}}</view> 
+              </view>
+            
+              <view class='list' >
+                  <view>投保人</view>
+                  <view>{{item.appntName}}</view> 
+              </view>
+              <view class='list'>
+                  <view>被保人</view>
+                  <view>{{item.insuredName}}</view> 
+              </view>
+              <view class='list'>
+                  <view>受益人</view>
+                  <view>法定</view> 
+              </view>
+
+            </view>
+            
+            <view class='list'>
+                 <view>保费总额</view>
+                 <view style='color:#ff0000'>{{orderBase.orderAmount}}</view> 
+            </view>
+      </view>
+      <view class='intrduceTitle'>保障简介</view>
+    <view class='intrduceBox' wx:for="{{contDetails}}">
+      <view class='intrduce'>
+          <text>保障项目</text>
+          <text>保额</text>
+      </view>
+        <view class='intrduceList intrduce listBorder insureProject' wx:for="{{item.riskDutys}}">
+          <text>{{item.dutyName}}</text>
+          <text class='dutyAmount'>{{item.dutyAmount}}</text>
+      </view>
+    </view>
+</view>
+

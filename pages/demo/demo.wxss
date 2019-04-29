@@ -1,0 +1,14 @@
+.swiper {
+  height: 300rpx;
+  width: 100%;
+}
+
+.swiper image {
+  height: 100%;
+  width: 100%;
+}
+
+.prd_img {
+  height: 360rpx;
+  width: 100%;
+}

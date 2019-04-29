@@ -1,0 +1,63 @@
+<!--pages/memberHome/memberHome.wxml-->
+<!--头部logo-->
+<!--未登录显示登录按钮-->
+<view class='logoBox'>
+    <view class='headerBox'    wx:if="{{noLogin}}">
+      <image class='logo'  wx:if="{{noLogin}}" src='../../assets/images/memberHome/logo.png' ></image>
+      <text class='headerTx'  wx:if="{{noLogin}}">华瑞保险</text>
+    </view>
+<!--登录&注册-->
+    <view class='loginBox' wx:if="{{noLogin}}" >
+         <button class='loginReg login' wx:if="{{noLogin}}" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">登录/注册</button> 
+    </view>
+<!--已登录显示头像和昵称-->
+ <view class='userinfo' wx:if='{{hasLogin}}'  style='padding-bottom:40rpx;background:#fff; margin-bottom:2rpx;'>
+    <button wx:if='{{hasLogin}}'   wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
+    <block wx:if='{{hasLogin}}'>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+</view>
+
+<!--我的保单-->
+<view class="mypolicyBox">
+   <view class='iconfont icon-wodebaodan mypolicy'>
+      <!--未登录状态  -->
+       <button class="myOrder" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" hidden='{{!orderBtnState}}'>我的订单</button> 
+      <!--已登录状态  -->
+       <text bindtap='myPolicyDetail' hidden='{{orderBtnState}}'>我的订单</text> 
+      <!-- <text bindtap='myPolicyDetail'>我的定单</text> -->
+      <text class='iconfont icon-dayuhao-copy-copy' style='text-align:right'></text>
+    </view>
+</view> 
+<view class="mypolicyBox" bindtap='toAbountHuaRui'>
+   <view class='iconfont icon-guanyu1 mypolicy'>
+        <text url='/pages/orderDetail/orderDetail'>关于华瑞</text> 
+        <text class='iconfont icon-dayuhao-copy-copy'></text>
+    </view>
+</view> 
+
+<!--弹出层-->
+<view class="modal" wx:if="{{showView}}" bindtap='cancel'>
+</view>
+<view class='modalBox' wx:if="{{showView}}">
+      <view class='modalHeader'>手机验证</view>
+       <form bindsubmit="formSubmit" >
+            <view class='phoneBox'>
+           <input placeholder-class='placeHolderColor' class='fontSize'  value="{{phoneNum}}" name="tel" placeholder='手机号'   maxlength="11" bindblur="mobileinput" type='number'></input>
+           </view> 
+          <view class='numBox'><input  placeholder-class='placeHolderColor' class='fontSize' value="{{form.smsInfo}}" name="smsInfo" maxlength="8" placeholder='短信验证码' bindblur='smsinput'></input>
+            <button plain='true' style='border:none;font-size:30rpx;line-height: 98rpx;background:transparent;' disabled='{{buttonDisable}}' bindtap='getSecurityCode'  class="getCode {{grayactive?' grayactive' : ''}}" >{{getCodeNum}}</button>  
+          </view>
+          <view class='numBox' wx:if='{{show}}'><input  class='fontSize' placeholder-class='place' value="{{graphCode}}" name="graphInfo" placeholder='图形验证码' bindinput='graphinput'></input>
+          <image src='{{graphUrl}}' style='width:200rpx;height:90rpx;' bindtap='getImage'></image>
+          </view>  
+       <view class="btn">
+        <button class='btnColor' open-type="getUserInfo" bindgetuserinfo="getUserInfo"  formType="submit">立即登录</button>
+    </view> 
+     </form>
+       <view class='loadingModal' wx:if='{{loadingModelShow}}'></view> 
+    <view class='loding-img' wx:if="{{loadingHidden}}"><image src='/assets/images/index/system-loading-226.gif'></image></view>
+</view> 
+

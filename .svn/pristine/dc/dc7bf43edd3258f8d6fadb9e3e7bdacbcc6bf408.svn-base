@@ -1,0 +1,24 @@
+<!--index.wxml-->
+<view class="container">
+   <!-- <image class='img' src='./img/indexBG.png'></image> -->
+    <image class='img' src="{{productInfo.imgUrl}}"></image> 
+   <view class='swiper-container'>
+    <swiper class='swiperBox'
+  autoplay="{{autoplay}}" bindchange="swiperChange" interval="{{interval}}" style='color:orange' duration="{{duration}}">
+  <block wx:for="{{productInfo.productList}}">
+   <navigator url="{{item.productUrl}}">
+    <swiper-item>
+      <image src="{{item.productImageUrl}}" class="slide-image"/>
+    </swiper-item>
+   </navigator>
+  </block>
+</swiper>
+<view class="dots">  
+    <block wx:for="{{slider}}" wx:key="unique">  
+      <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view>  
+    </block>  
+  </view>  
+</view>  
+<!--<button bindtap="changeIndicatorDots"></button
+<button bindtap="changeAutoplay"> </button>-->
+</view>

@@ -1,0 +1,90 @@
+<!--index.wxml-->
+<!--banner-->
+<view class='containerBox'>
+  <view class="content-title">投保人信息</view>
+  <view class='selectBox'>
+      <view class='dataList border-top'>
+        <view class="section__title left">姓名</view>
+        <view class="section right">
+          <input disabled="{{appntNameDisable}}" bindblur='getAppntName' placeholder='请输入本人姓名' value='{{appntName}}' />
+        </view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left">身份证</view>
+        <view class="section right">
+          <input type="idcard" disabled="{{appntIdDisable}}" bindblur='getAppntId' maxlength="18" placeholder="请输入您本人的身份证号" value='{{appntId}}' />
+        </view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left">手机号</view>
+        <view class="section right">
+          <input type="number" maxlength="11" bindblur='getAppntPhoneNum' placeholder='请输入本人手机号' disabled="{{appntPhoneNumDisable}}" value='{{appentPhoneNumber}}'/>
+        </view>
+      </view>
+  </view>
+
+  <view class="content-title">被保人信息</view>
+  <view class='selectBox'>
+      <view class='section dataList border-top'>
+        <view class="section__title left">与投保人关系</view>
+        <picker  style='padding-right:400rpx;' disabled='{{insuredDisable}}' bindchange="bindPickerChange" value="{{index}}" range="{{relationToAppnt}}">
+          <view class="picker right">
+            <text wx-if="{{!relationToAppnt[index]}}">本人</text>{{relationToAppnt[index]}}<text class="iconfont icon-xiaoyuhao-down" style='margin-right:-350rpx;float:right'></text>
+          </view>
+        </picker>
+      </view>
+
+      <view wx-if="{{relationToAppnt[index] && relationToAppnt[index]!='本人'}}">
+        <view class='dataList border-top'>
+          <view class="section__title left">被保人姓名</view>
+          <view class="section right">
+            <input bindblur ="getRecognizeeName"  placeholder="请输入被保人姓名" value='{{insuredName}}'/>
+          </view>
+        </view>
+        <view class='dataList border-top'>
+          <view class="section__title left">被保人身份证</view>
+          <view class="section right">
+            <input type="idcard" bindblur='getRecognizeeId' value='{{insuredIdNo}}' placeholder="请输入被保人身份证" />
+          </view>
+        </view>
+      </view>
+  </view>
+
+    <view class="content-title">受益人信息</view>
+  <view class='selectBox'>
+      <view class='dataList border-top'>
+        <view class="section__title left">受益人</view>
+        <view class="section right">{{bnfName}}</view>
+        <input hidden='true'>{{bnfType}}</input>
+      </view>
+  </view>
+
+   <!-- 积分抵扣 -->
+    <view class="content-title" wx:if="{{pointsDeductionShow}}">抵扣信息</view>
+    <view class="dataList border-top" wx:if="{{pointsDeductionShow}}"> 
+      <view class='left'>积分抵扣</view>
+      <view class='rightPoint'><text class='pointTextTip'>{{pointText}}</text><switch color="#f3b256" disabled="{{switchOpen}}"  checked='{{pointChecked}}' bindchange="switch1Change"/></view>
+    </view>
+    
+    <!--城市选择 -->
+    <!-- <view class="content-title">标的信息</view>
+      <view class="selectBox">
+        <view class='section dataList border-top'>
+        <view class="section__title">省市区</view>
+        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+          <view class="picker markRight">
+          {{region[0]}}，{{region[1]}}，{{region[2]}}
+          </view>
+        </picker>
+      </view>
+    </view> -->
+    <!--下一步  -->
+    <view class='kefuBox'>
+          <view>{{price}}<text class='money'>元</text></view>
+          <view  bindtap='insureBTN'>下一步</view>
+    </view>
+    <view class='tipErr' hidden='{{tipErrShow}}'>{{tipErrText}}</view>
+</view>
+<!-- <view class='modal' hidden='{{modelShow}}'></view>  -->
+  <view class='loadingModal' hidden='{{loadingModelShow}}'></view> 
+   <view class='loding-img' hidden="{{loadingHidden}}"><image src='/assets/images/index/system-loading-226.gif'></image></view> 

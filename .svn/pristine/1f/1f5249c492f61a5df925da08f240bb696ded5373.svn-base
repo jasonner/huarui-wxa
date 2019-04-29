@@ -1,0 +1,79 @@
+<!--pages/myPolicy/myPolicy.wxml-->
+<view class="body">
+  <view class="nav bc_white">
+    <view class="{{selected?'red':'default'}}" bindtap="selected">已付款</view>
+    <view class="{{selected1?'red':'default'}}" bindtap="selected1">待付款</view>
+  </view>
+
+  <!--  已付款  -->
+  <view class="{{selected?'show':'hidden'}}">
+    <!--  已付款情况下,暂无保单  -->
+    <view class="noPolicyBox {{noProductPay?'show':'hidden'}}">
+      <image class='noPolicy' wx:if="{{noProductPayImg}}"  src='../../assets/images/myPolicy/noPolicy.png'></image>
+      <text class='noPolicyText'  wx:if="{{noProductPayImg}}"  >您暂无保单！</text>
+    </view>
+    <!--  已付款情况下,有保单列表  -->
+    <scroll-view scroll-top="{{scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px" class="orderList {{hasProductPay?'show':'hidden'}}" bindscrolltolower="bindDownLoad" bindscroll="scroll">
+     
+    <view class="policyBox policyPayed" wx:key='{{payedOrderList}}'  wx:for="{{payedOrderList}}">
+    
+      <!--用已支付订单测试支付页面渲染数据  -->
+      <navigator class='payEnd' url='../orderDetail/orderDetail?applicationNo={{item.applicationNo}}'>
+        <image class='detailBG1' src='../../assets/images/myPolicy/swetBG.png'></image>
+        <view class='policy'>
+          <view>
+            <!-- <image class='iconImg' src='../../assets/images/myPolicy/icon01.png'></image> -->
+            <text class='policyTX'>{{item.productName}}</text>
+          </view>
+          <view class="payedInsured">
+            <!-- <image class='iconImg' src='../../assets/images/myPolicy/icon02.png'></image> -->
+           <text class="policyTX {{item.insurePeriod==999? 'active' : ''}}" wx:if="{{!insurePeriodSHOW}}">保障期间：{{item.insureBeginDate}}-{{item.insureEndDate}}</text>
+             <text class="policyTX {{item.insurePeriod==999? '' : 'active'}}">保障期间：终身</text>
+          </view>
+          <view class='payedApplication'>
+            <!-- <image class='iconImg' src='../../assets/images/myPolicy/icon3.png'></image> -->
+            <text class='policyTX'>订单号 : {{item.applicationNo}}</text>
+          </view>
+        </view>
+        <view class='policyMoney1'>
+              <view>{{item.orderStatusDesc}}</view>
+              <view>{{item.orderAmount}}元</view>
+        </view>
+        </navigator>
+    </view>
+    </scroll-view>
+  </view>
+
+  <!--  待付款  -->
+  <view class="{{selected1?'show':'hidden'}}">
+    <!--  待付款情况下,暂无保单  -->
+    <view class="noPolicyBox {{noProduct?'show':'hidden'}}" >
+      <image class='noPolicy' src='../../assets/images/myPolicy/noPolicy.png'></image>
+      <text class='noPolicyText'>您暂无保单！</text>
+    </view>
+      <!--  待付款情况下,有保单列表  -->
+    <scroll-view scroll-top="{{scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px" class="orderList {{hasProduct?'show':'hidden'}}" bindscrolltolower="bindDownLoad" bindscroll="scroll">
+      <view class="policyBox" wx:key='{{waitPayedOrderList}}'  wx:for="{{waitPayedOrderList}}" >
+        <image class='detailBG' src='../../assets/images/myPolicy/swetBG.png'></image>
+        <view class='policy obligationPolicy'>
+          <view class='productInfo'>
+            <!-- <image class='iconImg' src='../../assets/images/myPolicy/icon01.png'></image> -->
+            <text class='policyTX'>{{item.productName}}</text>
+          </view>
+          <view class='safeguardPeriod'>
+              <!-- <image class='iconImg' src='../../assets/images/myPolicy/icon02.png'></image> -->
+              <text class="policyTX {{item.insurePeriod==999? 'active' : ''}}" wx:if="{{!insurePeriodSHOW}}">保障期间：{{item.insureBeginDate}}-{{item.insureEndDate}}</text>
+              <text class="policyTX {{item.insurePeriod==999? '' : 'active'}}">保障期间：终身</text>
+          </view>
+        </view>
+        <view class='policyMoney obligation'>
+              <view>{{item.orderAmount}}元</view>
+               <view><navigator url='../payAndSign/payAndSign?itemCode={{item.itemCode}}&applicationNo={{item.applicationNo}}'>立即支付</navigator></view> 
+        </view>
+      
+      </view>
+    </scroll-view>
+  </view>
+   <view class='loadingModal' hidden='{{loadingModelShow}}'></view> 
+    <view class='loding-img' hidden="{{loadingHidden}}"><image src='/assets/images/index/system-loading-226.gif'></image></view>
+</view>

@@ -1,0 +1,76 @@
+// pages/demo/demo.js
+const hrp = require('../../api/hrp.js');
+const util = require('../../utils/util.js')
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    // 支付结果信息
+    applicationNo: '', //订单号
+    insurePeriod: '', //保障期间
+    payMoney: '', //支付金额
+    insuredName: '', //被保人姓名
+    params: {}, //记录url参数信息
+    orderStatus: '3', //支付状态，默认为待支付状态
+    // orderStateInfo:false, //记录订单支付状态信息（控制显示成功/失败的图片及备注信息）
+    payState:'待支付',
+  },
+    /*跳转到保单详情页*/
+  primary:function(){
+    wx.navigateTo({
+      url: '../orderDetail/orderDetail?applicationNo='+this.data.params.applicationNo
+    })
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    
+    //从url中拿出参数，存放到params
+    this.setData({
+      params: util.getCurrentPageUrl(),
+    })
+    var that = this;
+    console.log(that.data.params)
+    console.log(that.data.params.applicationNo)
+    console.log(that.data.params.itemCode)
+    // 获取支付结果信息
+    hrp.getInsureResultInfo({ "applicationNo": that.data.params.applicationNo, "itemCode": that.data.params.itemCode}).then((data) => {
+      if (data.orderStatus == '0'){
+        console.log(data.orderStatus)
+        that.setData({
+          orderStatus:'0',
+          orderStateInfo:true,
+          payState:'支付成功'
+        })
+      } else if (data.orderStatus == '2'){
+        console.log(data.orderStatus)
+        that.setData({
+          orderStatus: '2',
+          orderStateInfo: false,
+          payState:'支付中'
+        })
+      } else if (data.orderStatus == '3'){
+        console.log(data.orderStatus)
+        that.setData({
+          orderStatus: '3',
+          orderStateInfo: false,
+          payState:'待支付'
+        })
+      }
+      console.log(data.applicationNo)
+      this.setData({
+        applicationNo: data.applicationNo,
+        insurePeriod: data.insurePeriod,
+        payMoney: data.payMoney,
+        insuredName: data.insuredName
+      })
+    })
+    console.log(that.data.orderStatus)
+  },
+})

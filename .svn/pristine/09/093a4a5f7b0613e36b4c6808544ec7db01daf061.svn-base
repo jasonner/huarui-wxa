@@ -1,0 +1,8 @@
+const http = require('../utils/http.js')
+const config = require('../env/config.js')
+
+const URL = customer_server_url
+
+module.exports = {
+  thirdAuth: (params) => http.get(URL + '/third/auth', { data: params })
+}

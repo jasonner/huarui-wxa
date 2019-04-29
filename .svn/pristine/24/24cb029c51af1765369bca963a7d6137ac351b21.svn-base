@@ -1,0 +1,147 @@
+const hrp = require('../../api/hrp.js');
+import http from '../../utils/http.js';
+const customer = require('../../api/customer.js')
+const app = getApp()
+var productDetailInfo = app.globalData.productDetailInfo;
+var buyInfo = app.globalData.buyInfo;//购买信息
+var orderInfo = app.globalData.orderInfo;//订单信息
+var insuredInfo = app.globalData.insuredInfo;//被保人信息
+Page({
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    timestamp:'', //时间戳信息
+    nonceStr:'',//签名随机串
+    signature:'', //签名
+    package: '',//prepay_id 参数值
+    paySign:'',//微信返回的签名
+
+  },  
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+   // 1.页面加载时，调hrp支付信息查询接口，getPayInfo，将数据填充到页面上
+    hrp.getPayInfo({ "applicationNo": "" }).then((data) => {
+      //往页面里面填充数据：产品名称&支付金额
+    })
+    
+  },
+  // 点击支付按钮绑定事件
+  confirm:function(){
+    if (data.payProduct.payType && data.payProduct.payType == 'wxaPay') {
+      //有支付方式并且支付方式为微信小程序支付
+      this.confirmBuy()
+    }else{
+      // 绑卡支付
+    }
+  },
+
+  //支付
+  confirmBuy:function(){
+    console.log('确认支付 ')
+    //调用客户中心微信授权分享接口
+    customer.chImg({}).then((data) => {
+    //获取timestamp(签名时间戳)，nonceStr(签名随机串), signature(签名)
+      this.setData({
+        timestamp:data.timestamp,
+        nonceStr:data.nonceStr,
+        signature:data.signature
+      })
+    })
+    //调用支付承保接口，发起微信支付
+    hrp.payAndSign({
+      "applicationNo": '', "payMode": "wxPay", accountNo: '',
+      "timestamp": timestamp, "nonceStr": nonceStr}).then((data) => {
+        if(data.result == 0){
+          this.setData({
+            paySign: data.sign,
+            package: data.payAndSignResultMessage.prepay_id,
+          })
+          // 发起微信支付
+          wx.requestPayment({
+            timeStamp: timeStamp,
+            nonceStr: nonceStr,
+            package: package,
+            signType: 'MD5',
+            paySign: paySign,
+            complete: function (res) {
+              // 支付完成(成功失败都执行): 支付成功，跳转到成功的支付结果页;支付失败，跳转到失败的支付结果页
+              wx.navigateTo({
+                url: '../result/result',
+              })
+            }
+
+          })
+        }else{
+          wx.showToast({
+            title: data.resultMessage,
+          })
+        }
+       
+      })
+  },
+ 
+  
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    console.log(buyInfo);
+    console.log(orderInfo);
+    console.log(insuredInfo);
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+     this.setData({
+       price: buyInfo.price
+     })  
+     this.setData({
+       productDetailName: orderInfo.productDetailName
+     }) 
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+  
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+  
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+  
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  }
+  
+})

@@ -1,0 +1,191 @@
+const hrp = require('../../api/hrp.js');
+import http from '../../utils/http.js';
+const customer = require('../../api/customer.js')
+const util = require('../../utils/util.js')
+const app = getApp()
+
+Page({
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    timestamp:'', //时间戳信息
+    nonceStr:'',//签名随机串
+    signature:'', //签名
+    package: '',//prepay_id 参数值
+    paySign:'',//微信返回的签名
+    params:{}, //记录url参数信息
+    productName:'', //待支付的产品名称
+    orderAmount: 0, //待支付的订单总金额
+    itemCode:'',
+    payMoney:0, //待支付的金额
+    payProduct:{}, //存放接口返回的待支付的产品信息
+    shareUrl:'', //存放当前页面的URL信息
+    payType:'', //存放调接口返回的支付方式
+    payTypeName:'微信支付',//支付方式由英文名变更为中文名，存放中文名
+    icon:'icon-weixinzhifu', //存放字体图标(银行卡，微信)
+    iconActive:'active', //存放选中状态（右侧对勾）
+  },  
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    //从url中拿出参数，存放到params
+    this.setData({
+      params: util.getCurrentPageUrl(),
+      shareUrl: util.getCurrentPageUrlWithArgs(),
+      loadingModelShow:false,
+      loadingHidden:false
+    })
+    this.data.params.applicationNo = options.applicationNo;
+    console.log(this.data.params.applicationNo);
+
+   // 1.页面加载时，调hrp支付信息查询接口，getPayInfo，将数据填充到页面上
+    hrp.getPayInfo({ "applicationNo": this.data.params.applicationNo}).then((data) => {
+      console.log(data)
+      if(data.result == 0){
+        //获取订单信息成功，往页面里面填充数据：产品名称&支付金额
+        console.log(data)
+        console.log(data.payOrder.itemCode)
+        this.setData({
+          productName: data.payOrder.productName,
+          orderAmount: data.payOrder.orderAmount,
+          payProduct: data.payProduct,
+          payType: data.payProduct.payType,
+          itemCode: data.payOrder.itemCode
+        })
+        // this.wxConfirmBuy();
+        //只有一种支付方式并且支付方式为微信小程序支付
+        console.log(data.payProduct.payType.length);
+        console.log(data.payProduct.payType);
+        this.setData({
+          loadingHidden: true,
+          loadingModelShow: true
+        })
+        if (data.payProduct.payType.length == 1 && data.payProduct.payType[0] == 'wxPay'){
+          console.log('有支付方式并且支付方式为微信小程序支付')
+          this.setData({
+            payTypeName: '微信支付',
+            iconActive:'active',
+            icon: 'icon-weixinzhifu',
+          })
+          this.wxConfirmBuy();
+        }
+      }else{
+        //获取订单信息失败，跳转到失败结果页
+        wx.navigateTo({
+          url: '../result/result?itemCode=' + this.data.itemCode + '&applicationNo=' + this.data.applicationNo,
+        })
+      }
+     
+    })
+  },
+ 
+  // 点击支付按钮绑定事件:有多种支付方式
+  wxConfirm: function () {
+    console.log("测试支付666")
+    console.log(this.data.payProduct.payType.length);
+    console.log(this.data.payProduct.payType.toString());
+    // if (this.data.payProduct.payType.length >= 1 && this.data.payProduct.payType.toString() == 'wxaPay') {
+    if (true) {
+      //有多种支付方式并且支付方式为微信小程序支付
+      console.log('有支付方式并且支付方式为微信小程序支付')
+      this.setData({
+        payTypeName:'微信支付',
+        iconActive: 'active',
+        icon: 'icon-weixinzhifu'
+      })
+      this.wxConfirmBuy() //发起微信支付
+    } else {
+      // 绑卡支付
+      if (this.data.payProduct.payType.length > 1 && this.data.payProduct.payType == 'bindPay'){
+        this.setData({
+          payTypeName: '绑卡支付',
+          iconActive: 'active'
+        })
+      }
+      // 银行卡支付
+      if (this.data.payProduct.payType.length > 1 && this.data.payProduct.payType == 'bankPay'){
+        this.setData({
+          payTypeName: '银行卡支付',
+          iconActive: 'active',
+          icon: 'icon-weixinzhifu'
+        })
+      }
+    }
+  },
+
+  //微信小程序支付
+  wxConfirmBuy:function(){
+    console.log('确认支付 ');
+    //调用支付承保接口，发起微信支付
+    var that = this;
+    var third = wx.getStorageSync("third");
+    console.log(third);
+    console.log(that.data.params.applicationNo);
+    hrp.payAndSign({
+      "applicationNo": that.data.params.applicationNo, "payMode": "wxPay", accountNo: third,
+      "system": "","type": "",
+      //  "timestamp": that.data.timestamp, "nonceStr": that.data.nonceStr
+    }).then((data) => {
+    console.log(data);
+    if (data.result == 0) {
+      // 支付承保请求成功
+      var s = JSON.parse(data.payAndSignResultMessage);
+      console.log(s);
+      if (s.return_code !="FAIL"){
+        //获取timestamp(签名时间戳)，nonceStr(签名随机串), signature(签名)
+        that.setData({
+          paySign: s.sign,
+          package: 'prepay_id=' + s.prepay_id,
+          timestamp: s.timeStamp,
+          nonceStr: s.nonceStr,
+          signature: s.sign
+        })
+        console.log(s.timeStamp);
+        console.log(s.nonceStr);
+        console.log(s.nonceStr);
+        // 发起微信支付
+        wx.requestPayment({
+          'timeStamp': s.timeStamp,
+          'nonceStr': s.nonceStr,
+          'package': that.data.package,
+          'signType': 'MD5',
+          'paySign': s.sign,
+          'success': function (res) {
+            console.log(red)
+            // 支付完成(成功失败都执行): 支付成功，跳转到成功的支付结果页;支付失败，跳转到失败的支付结果页
+            wx.navigateTo({
+              url: '../result/result?itemCode=' + that.data.itemCode + "&applicationNo=" + that.data.params.applicationNo,
+            })
+          },
+        })
+      }else{
+        wx.showModal({
+          title: '提示',
+          content: s.return_msg,
+          confirmColor: "#f3b256",
+        })
+      }
+    } else {
+      // 支付承保请求失败，提示错误信息
+      wx.showToast({
+        title: data.resultMessage,
+      })
+    }
+
+    })
+  },
+  
+  // 测试结果页
+  testResult:function(){
+    var that = this;
+    console.log(that.data.params.applicationNo)
+    wx.navigateTo({
+      url: '../result/result?itemCode=' + that.data.itemCode + '&applicationNo=' + that.data.params.applicationNo, //支付成功，已测通
+    })
+  },
+})

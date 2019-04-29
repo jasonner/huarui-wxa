@@ -1,0 +1,504 @@
+// pages/demo/demo.js
+const hrp = require('../../api/hrp.js');
+import http from '../../utils/http.js';
+const customer = require('../../api/customer.js')
+const app = getApp();
+var productDetailInfo = app.globalData.productDetailInfo;
+var buyInfo = app.globalData.buyInfo;//购买信息
+var orderInfo = app.globalData.orderInfo;//订单信息
+var insuredInfo = app.globalData.insuredInfo;//被保人信息
+var username = "";//用户名
+var userId = "";//用户ID
+var userPhoneNum = "";//用户手机号
+var underwritingFlag = false;//核保标志
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    userInfo: {},
+    hasUserInfo: false,
+    tipErrShow: true,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    items: [
+      { name: 'CHN', value: '', checked: 'true' }
+    ],
+    relationToAppnt: ['本人', '子女',"父母","配偶","朋友"], //初始化与被保人关系
+  },
+  bindPickerChange: function (e) {//被保人关系信息改变
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
+  },
+  userNameInput: function (e) {//录入用户姓名并保存在session变量里面
+    var that = this;
+    var recognizeeName = e.detail.value
+    if (recognizeeName=="") {
+      underwritingFlag = false;//核保标志      
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入被保人姓名"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000)
+    } else {
+      underwritingFlag = true;
+      insuredInfo.insuredName = recognizeeName;
+      this.setData({
+        tipErrShow: true
+      })
+    }
+  },
+  getUserId:function(e){//获取投保人ID
+    var that = this;
+    var userId = e.detail.value;
+    orderInfo.appntIdNo = e.detail.value;
+    var userIdLength = userId.length;
+    var result = that.isCardNo(userId);
+    if (!result) {
+      underwritingFlag = false;
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入正确的身份证号"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000)
+    } else {
+      var year = that.substring(userId, 6, 10);
+      console.log(year);
+      var month = that.substring(userId, 10, 12);
+      var day = that.substring(userId, 12, 14);
+      console.log("年:" + year + "月:" + month + "日" + day);
+      var userBirthday = year + "-" + month + "-" + day;
+      console.log("用户出生日期为:" + userBirthday);
+      buyInfo.birthday = userBirthday;
+      this.setData({
+        tipErrShow: true
+      })
+    }
+  }, 
+
+  userIdInput:function(e){//获取被保人身份证号
+    var that  =this;
+    var userId = e.detail.value;
+    insuredInfo.insuredIdNo = e.detail.value;
+    var userIdLength = userId.length;
+    var result = that.isCardNo(userId);
+    if (!result){
+      underwritingFlag = false;
+        this.setData({
+          tipErrShow: false
+        })  
+        this.setData({
+          tipErrText: "请输入正确的身份证号"
+        })
+        setTimeout(function(){
+          that.setData({
+            tipErrShow: true
+          })  
+        },5000)
+    }else{
+      var year = that.substring(userId,6,10); 
+      console.log(year);
+      var month = that.substring(userId,10,12);
+      var day = that.substring(userId,12,14);
+      console.log("年:"+year+"月:"+month+"日"+day);
+      var userBirthday = year+"-"+month+"-"+day;
+      console.log("用户出生日期为:" +userBirthday);
+      buyInfo.birthday = userBirthday;
+      this.setData({
+        tipErrShow: true
+      })
+    }
+  },
+  userPhoneNumInput:function(e){//获取用户手机号
+    var that = this;
+    var userPhoneNum = e.detail.value;
+    console.log(userPhoneNum);
+    var sMobile = that.checkMobile(userPhoneNum); 
+    if (!sMobile){
+      underwritingFlag = false
+      this.setData({
+        tipErrShow: false
+      })
+      this.setData({
+        tipErrText: "请输入正确的手机号"
+      })
+      setTimeout(function () {
+        that.setData({
+          tipErrShow: true
+        })
+      }, 5000);
+    } else {
+      underwritingFlag = true;
+      this.setData({
+        tipErrShow: true
+      })
+    } 
+  },
+  // 立即投保
+  insureBTN: function (options){
+    if (buyInfo.recognizeeName && buyInfo.recognizeeName != "" || buyInfo.birthday && buyInfo.birthday!=""){
+      }
+    console.log(orderInfo);
+    console.log(insuredInfo)
+    hrp.underwriting({
+      orderInfo: orderInfo,
+      insuredInfo: insuredInfo
+    }).then((data) => {
+          console.log(data);
+    }) 
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.setData({
+      price: orderInfo.orderAmount
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+         console.log(buyInfo);
+         console.log(orderInfo);
+         console.log(insuredInfo);
+  },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  },
+  //用户身份证验证
+  isCardNo:function (card){  
+    // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X  
+    var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
+    console.log(reg.test(card)) 
+    if(reg.test(card) === false) {
+      return false;
+    }else{
+      return true;
+    }
+  },
+  //用户手机号验证
+  checkMobile: function (sMobile){ 
+    if (!(/^1[34578]\d{9}$/.test(sMobile))){ 
+      return false;
+    }else{
+      return true;
+    } 
+  }, 
+  //截取用户身份证出生日期
+  substring:function(str,n,m){
+    var res=str.substring(n,m);
+    return res;
+  },
+  // 校验年龄范围
+  checkInsurdBirth:function (birthday){
+    if(new Date(buyInfo.insuredEndDate).getTime() >= new Date(birthday).getTime() && new Date(birthday).getTime() >= new Date(buyInfo.insuredBeginDate).getTime()) {
+        return true;
+    } else {
+             //$.alertMessage("请确认被保险人年龄在可保范围内");
+        this.setData({
+          tipErrText:"请确认被保险人年龄在可保范围内"
+        })  
+        return false;
+    }
+  },
+  calInsurePlan:function () {
+// 根据关系获得被保人身份证号
+    if (relation == "00") {
+      if (!customerInfo.idNoStar) {
+        var insuredIdNo = $('#idNo').val();
+        if (!$.validator.isIdno(insuredIdNo, '请输入投保人正确的身份证号')) {
+          return;
+        }
+      }
+      var birthDate = customerInfo.birthday ? customerInfo.birthday : (insuredIdNo.substring(6, 10) + "-" + insuredIdNo.substring(10, 12) + "-" + insuredIdNo.substring(12, 14));
+      // 年龄
+      var age = getAge(birthDate);
+      // 性别
+      var sex = (customerInfo.sex == 0 || !customerInfo.sex) ? (insuredIdNo.substr(16, 1) % 2 == 0 ? 2 : 1) : customerInfo.sex;
+    } else {
+      var insuredIdNo = $('#insuredIdNo').val();
+  //校验身份证号
+      if (!$.validator.isIdno(insuredIdNo, '请输入被保人正确的身份证号')) {
+        return;
+      }
+  // 出生日期
+      var birthDate = insuredIdNo.substring(6, 10) + "-" + insuredIdNo.substring(10, 12) + "-" + insuredIdNo.substring(12, 14);
+  // 年龄
+      var age = getAge(birthDate);
+  // 性别
+      var sex = insuredIdNo.substr(16, 1) % 2 == 0 ? 2 : 1;
+    }
+
+      console.log("性别" + sex);
+      console.log("年龄" + age);
+      console.log("产品编码" + orderInfo.productCode);
+      console.log("生效日期" + orderInfo.cvalidDate);
+      console.log("保险期间" + orderInfo.insurePeriod);
+      console.log("保险期间单位" + orderInfo.insurePeriodType);
+      console.log("缴费期间" + orderInfo.payInterval);
+      console.log("缴费期间单位" + orderInfo.payIntervalType);
+
+//            if (sex != "" && (birthDate != "" || insureInfoDetail.insuredAgeRange.length==0)) {
+      console.log("校验年龄范围结果:" + checkInsurdBirth(birthDate));
+      if (checkInsurdBirth(birthDate)) {
+        var result = "";
+        // 计算保费
+        var price = calPrem(orderInfo.productName, orderInfo.insurePeriod, orderInfo.insurePeriodType, age, sex, orderInfo.payInterval, orderInfo.payIntervalType);
+        console.log("保费试算：" + price);
+        if (price == "") {
+          // TODO 是否要有提示
+          $("#orderAmount").html(orderInfo.orderAmount);
+          $("#nextStep").removeClass("canNotBuy");
+        } else if (price == "--") {
+          price = "--";
+          orderInfo.orderAmount = price;
+          buyInfo.orderAmount = orderInfo.orderAmount;
+
+          $("#orderAmount").html(price);
+          if (!$("#nextStep").hasClass("canNotBuy")) {
+            $("#nextStep").addClass("canNotBuy");
+          }
+          result = "当前客户信息不支持投保";
+        } else {
+          price = price * orderInfo.mult;
+          orderInfo.orderAmount = parseFloat(price).toFixed(2);
+          buyInfo.orderAmount = orderInfo.orderAmount;
+
+          $("#orderAmount").html(parseFloat(price).toFixed(2));
+          $("#nextStep").removeClass("canNotBuy");
+        }
+        // if (buyInfo.isPoint) {
+        //   calPoint();
+        // }
+        // 保存信息到sessionStorage里面
+        if (result == "") {
+          setShowInfo(relation, sex, birthDate);
+        }
+        return result;
+      } else {
+        console.log("被保人年龄不在投保范围内");
+      /*if(buyInfo.isPoint){
+          calPoint();
+      }*/
+      // 保存信息到sessionStorage里面
+      //setShowInfo(relation,sex,birthDate);
+        return "请确认被保险人年龄在可保范围内";
+      }
+  },
+   // 7. 计算保费
+  calPrem:function (planName, period, insurePeriodUnit, age, sex, payInterval, payIntervalType) {
+    console.log("开始计算保费");
+    var that = this
+    console.log("计划名：" + planName + "，保险期间：" + period + "，保险期间单位：" + insurePeriodUnit + "，年龄：" + age + "，性别：" + sex + "，缴费期间：" + payInterval + "，缴费期间单位：" + payIntervalType);
+     // 格式化性别
+    if(sex == '0') {
+       sex = '男';
+    } else if (sex == '1') {
+       sex = '女';
+    } else if (sex == '2') {
+     sex = '不详';
+   }
+   // 格式化保险期间
+    if (insurePeriodUnit == "M") {
+      period = period + "月";
+      console.log(period)
+    } else if (insurePeriodUnit == "D") {
+      period = period + "天";
+      console.log(period)
+    } else if (insurePeriodUnit == "Y") {
+      period = period + "年";
+      console.log(period)
+    } else if (insurePeriodUnit == "A") {
+      period = period + "岁";
+      console.log(period)
+    }
+    // 格式化缴费期间
+    if (payIntervalType == "Y") {
+      payInterval = payInterval + "年";
+    } else if (payIntervalType == "M") {
+      payInterval = payInterval + "月";
+    }
+    // 保费试算
+    var saleMapper = productDetailInfo.insureInfo.propertyMapperExcel;
+    if (saleMapper != undefined && saleMapper != "") {
+      var amt = ""; // 保费
+      console.log("保费999"+amt)
+      console.log(saleMapper.length)
+      for (var i = 0; i < saleMapper.length; i++) {
+        console.log(saleMapper[i].protectPlan)
+        if (planName == undefined || saleMapper[i].protectPlan == '' || saleMapper[i].protectPlan == planName) {   // 产品编码是计算保费的一个标识  所以不能为空
+          console.log("产品编码" + saleMapper[i].protectPlan)
+          if (sex == undefined || saleMapper[i].sex == '' || saleMapper[i].sex == sex) {
+            if (payInterval == undefined || saleMapper[i].chargePeriod == '' || saleMapper[i].chargePeriod == payInterval) {
+              if(payInterval == undefined || saleMapper[i].chargePeriod == '' || saleMapper[i].chargePeriod == payInterval) {
+                if (period == undefined || saleMapper[i].insurePeriod == '' || saleMapper[i].insurePeriod == period) {
+                  if (period == saleMapper[i].insurePeriod) {
+                        // value含有key=age  属性，同时这个值不为空时，进行年龄范围的筛选
+                    if (period == saleMapper[i].insurePeriod){
+                      var k = i;
+                      if (saleMapper[k].insuredAge && saleMapper[i].insuredAge != "" && saleMapper[k].insuredAge != "-") {
+                          var checkMin = "";
+                          var checkMax = "";
+                          var ageUnit = age.substring(age.length - 1); // 获取用户年龄单位 D/Y
+                          console.log(ageUnit)
+                          var ageVal = age.substring(0, age.length - 1); // 获取用户年龄
+                          console.log(ageVal)
+                          // var ageMapper = value['insuredAge'];  // 获取配置中的年龄范围
+                          var ageMapper = saleMapper[k].insuredAge
+                          var ageMapperArry = ageMapper.split("-"); //eg: [60D,17Y]
+                          console.log(ageMapperArry)
+                        // 18Y的情况
+                          if (ageMapperArry.length == 1) {
+                            var beginUnit = ageMapperArry[0].toString().substring(ageMapperArry[0].length - 1);  // 获取单位 eg:Y
+                            var beginVal = ageMapperArry[0].toString().substring(0, ageMapperArry[0].length - 1);  // 获取单位 eg:60
+                            console.log(beginUnit)
+                            console.log(beginVal)
+                            if (beginUnit == "天") {
+                              beginUnit = "D";
+                            } else if (beginUnit == "年") {
+                              beginUnit = "Y";
+                            }
+                            if (ageUnit == beginUnit && parseInt(ageVal) == parseInt(beginVal)) {       // 单位相同
+                              checkMin = true;
+                              checkMax = true;
+                            } else {             // 单位不同
+                              checkMin = false;
+                              checkMax = false;
+                            }
+                          }else { //18Y-65Y的情况    
+                            for (var j = 0; j < ageMapperArry.length; j++) {
+                              var beginUnit = ageMapperArry[j].toString().substring(ageMapperArry.length);  // 获取单位 eg:60
+                              var beginVal = ageMapperArry[j].toString().substring(0, ageMapperArry.length);  // 获取单位 eg: D
+                              if (j == 0) {
+                                if (beginUnit == "天") {
+                                  beginUnit = "D";
+                                }else if (beginUnit == "年") {
+                                  beginUnit = "Y";             
+                                }
+
+                                console.log(ageUnit + "+" + beginUnit)
+                                if (ageUnit == beginUnit) { // 单位相同
+                                  if (parseInt(ageVal) >= parseInt(beginVal)) {
+                                      checkMin = true;
+                                  } else {
+                                       checkMin = false;
+                                  }
+                                } else { // 单位不同               
+                                  if (ageUnit == 'D' && beginUnit == 'Y') {
+                                    checkMin = false;
+                                  } else if (ageUnit == 'Y' && beginUnit == 'D') {
+                                    checkMin = true;
+                                  }
+                                }
+                              }
+                              if (j == 1) {
+                                var endUnit = ageMapperArry[j].toString().substring(ageMapperArry.length);  // 获取单位
+                                var endVal = ageMapperArry[j].toString().substring(0, ageMapperArry.length);  // 获取单位  eg: D/Y                          
+                                console.log(endUnit + "单位" + endVal)
+                                if (endUnit == "天") {
+                                  endUnit = "D";
+                                } else if (endUnit == "年") {
+                                  endUnit = "Y";
+                                }
+                                if (ageUnit == endUnit) {
+                                  if (parseInt(ageVal) <= parseInt(endVal)) {
+                                    checkMax = true;
+                                  } else {
+                                    checkMax = false;
+                                  }
+                                  }else {
+                                  if (ageUnit == 'D' && endUnit == 'Y') {
+                                    checkMax = true;
+                                  }else if (ageUnit == 'Y' && endUnit == 'D') {
+                                    checkMax = false;
+                                  }
+                                }
+                              }  
+                            }
+                          }
+                        }
+                        if (checkMax && checkMin) { // 最终出生日期也正确了  则开始计算保费
+                          console.log(saleMapper[k])
+                          wx.getStorage({
+                            key: 'fewNum',
+                            success: function(res) {
+                              var mult = res.data;
+                              console.log(mult)
+                              if (parseInt(saleMapper[k].mult) < parseInt(mult)) {
+                                this.setData({
+                                  fewNum: mult
+                                })
+                               // isAllow(parseInt(saleMapper[k].mult));
+                                if (saleMapper[k].amt == undefined || saleMapper[k].amt == "") {
+                                  amt = "--";
+                                  this.setData({
+                                    price:amt
+                                  })
+                                } else {
+                                  amt = saleMapper[k].amt;
+                                  this.setData({
+                                    price: amt * mult
+                                  })
+                                }     
+                              } else if (parseInt(saleMapper[k].mult) > parseInt(mult)) {
+                                  this.setData({
+                                    fewNum: saleMapper[k].mult
+                                  })
+                                  
+                                  if (saleMapper[k].amt == undefined || saleMapper[k].amt == "") {
+                                    amt = "--";
+                                    this.setData({
+                                      price: amt
+                                    })
+                                  } else {
+                                    amt = saleMapper[k].amt;
+                                    this.setData({
+                                      price: amt * mult
+                                    })
+                                  }  
+                              }else{
+                                amt = saleMapper[k].amt
+                                that.setData({
+                                  price:amt
+                                })
+                                buyInfo.price = amt
+                              }
+                                //isAllow(parseInt(saleMapper[k].mult));   
+                            } 
+                          }) 
+                        } 
+                      }
+                    }
+                  }
+                }
+              } 
+            }
+          }
+        }
+      return amt;     
+      buyInfo.price = amt
+      console.log("保费" + amt)  
+    } else {
+      return ""
+    }
+  },
+})

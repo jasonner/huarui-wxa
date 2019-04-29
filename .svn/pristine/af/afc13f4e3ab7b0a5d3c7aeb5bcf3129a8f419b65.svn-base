@@ -1,0 +1,8 @@
+export default {
+  hrp_server_url: 'https://weixin.huaruisales.com/restful/hrp',
+  customer_server_url: 'https://weixin.huaruisales.com/restful/customer',
+  access_system_type: {
+    system: 'hr',
+    type: 'wx'
+  }
+}

@@ -1,0 +1,54 @@
+const app = getApp()
+const util = require('../../utils/util.js')
+import pageUtil from '../../utils/page-util.js'
+const customer = require('../../api/customer.js')
+const hrp = require('../../api/hrp.js')
+import http from '../../utils/http.js'
+// pages/policyDetails/policyDetails.js
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    urlParams: {}, //记录url参数信息
+    // 订单详情报文：JSON数据
+    orderBase: {},
+    contDetails: [],
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.setData({
+      loadingModelShow: false,
+      loadingHidden: false
+    }) 
+    // 检查登录状态
+    pageUtil.checkLogin().then((data)=>{
+      //从url中拿出参数，存放到urlParams:itemCode和applicationNo
+      this.setData({
+        urlParams: util.getCurrentPageUrl(),
+      })
+
+      console.log(this.data.urlParams)
+      var that = this;
+      // 获取订单详情信息
+      hrp.orderDetail({ "applicationNo": that.data.urlParams.applicationNo }).then((data) => {
+        console.log(data)
+        this.setData({
+          contDetails: data.contDetails,
+          orderBase: data.orderBase,
+          providerName: data.contDetails[0].providerName,
+          appntName: data.contDetails[0].appntName,
+          insuredName: data.contDetails[0].insuredName
+        })
+      })
+    })
+    this.setData({
+      loadingModelShow: true,
+      loadingHidden: true
+    }) 
+  },
+})

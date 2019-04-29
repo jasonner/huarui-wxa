@@ -1,0 +1,16 @@
+/* pages/healthTold/healthTold.wxss */
+.headerBox,.headerText{
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+.headerTitle{
+  font-size: 30rpx;
+  color: #333;
+  margin-top: 32rpx;
+}
+.headerText{
+  margin-top: 30rpx;
+  font-size: 24rpx;
+  color: #666;
+  line-height: 36rpx;
+}

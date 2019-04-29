@@ -1,0 +1,3 @@
+import config from './config_dev'
+import WxRequest from '../assets/plugins/wx-request/lib/index'
+export default WxRequest

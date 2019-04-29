@@ -1,0 +1,32 @@
+<!--index.wxml-->
+<view class="container">
+  <view wx:if='{{!iPhoneX}}' class='img' style='background-image:url({{imgUrl}})'></view>
+  <view wx:if="{{iPhoneX}}" class='iPhoneX' style='background-image:url({{imgUrl}})'></view>
+  <view class='swiper-container'>
+    <swiper class='swiperBox' 
+  autoplay="{{autoplay}}" circular='true' bindchange="swiperChange" loop="{{loop}}" interval="{{interval}}" style='color:orange' duration="{{duration}}">
+      <block wx:key="property" wx:for="{{productInfo}}">
+          <navigator hover-class="none" url="../productDetail/productDetail?itemCode={{item.productUrl}}">    
+         <!-- <navigator url="../productDetail/productDetail?itemCode=HRWX_HRP_PS5021">    -->
+        <swiper-item style="height:320rpx">
+            <view class='iponeX'></view>
+           <image src="{{item.productImageUrl}}" class="slide-image"/> 
+          <view class='tabTextBox'>
+                <text>{{item.productName}}</text>
+                <text>{{item.productDesc}}</text>
+                <text></text> 
+                <text>立即购买</text>
+          </view>
+        </swiper-item> 
+      </navigator>
+      </block>
+    </swiper>
+    <view class="dots">  
+      <block wx:for="{{productInfo}}" wx:key="unique">  
+        <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view>  
+      </block>  
+    </view>  
+  </view> 
+   <view class='loadingModal' hidden='{{loadingModelShow}}'></view> 
+    <view class='loding-img' hidden="{{loadingHidden}}"><image src='/assets/images/index/system-loading-226.gif'></image></view>
+</view>

@@ -1,0 +1,24 @@
+<!--pages/failure/failure.wxml-->
+<view class='containerBox'>
+  <view class="content">
+    <view id='payResult'>
+        <image id='resultImg' src="img/failure.png" lazy-load="true" mode="widthFix"></image>
+        <view>被保险人在保障期内</view>
+        <view class="productName">最多投保1份</view>
+    </view>
+
+    <view id='payInfo'>
+        <image class='img' src='img/msgBG.png' style='width:100%'></image>
+        <view class="itemlist">
+          <view class='item-content'>投保单号：<text>{{applicationNo}}</text></view>
+          <view class='item-content'>被保险人：<text>{{insuredName}}</text></view>
+          <view class='item-content'>保险期间：<text>{{insurePeriod}}</text></view>
+          <view class='item-content'>支付金额：<text>{{payMoney}}</text></view>
+        </view>
+    </view>
+    <button id="confirm" type="primary" size="default" loading="{{false}}" plain="{{false}}"
+          disabled="{{false}}" bindtap="primary">点击查看电子保单 </button>    
+  </view>
+
+
+</view>

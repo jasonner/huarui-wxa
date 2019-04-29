@@ -1,0 +1,67 @@
+<!--index.wxml-->
+<!--banner-->
+<view class='containerBox'>
+  <view class="content-title">投保人信息</view>
+  <view class='selectBox'>
+      <view class='dataList border-top'>
+        <view class="section__title left">姓名</view>
+        <view class="section right">
+          <input disabled="true" value='{{userSelfName}}' />
+        </view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left">身份证</view>
+        <view class="section right">
+          <input type="idcard" bindblur='userIdInput' maxlength="18" placeholder="请输入您本人的身份证号" value='{{userSelfId}}' />
+        </view>
+      </view>
+      <view class='dataList border-top'>
+        <view class="section__title left">手机号</view>
+        <view class="section right">
+          <input type="number" maxlength="11"  disabled="true" value='{{userSelfPhoneNumber}}'/>
+        </view>
+      </view>
+  </view>
+
+  <view class="content-title">被保人信息</view>
+  <view class='selectBox'>
+      <view class='section dataList border-top'>
+        <view class="section__title left">与投保人关系</view>
+        <picker  style='padding-right:45rpx;' bindchange="bindPickerChange" value="{{index}}" range="{{relationToAppnt}}">
+          <view class="picker right">
+            <text wx-if="{{!relationToAppnt[index]}}">本人</text>{{relationToAppnt[index]}}<text class="iconfont icon-xiaoyuhao-down" style='margin-left:10rpx'></text>
+          </view>
+        </picker>
+      </view>
+
+      <view wx-if="{{relationToAppnt[index] && relationToAppnt[index]!='本人'}}">
+        <view class='dataList border-top'>
+          <view class="section__title left">被保人姓名</view>
+          <view class="section right">
+            <input bindblur ="userNameInput"  placeholder="请输入被保人姓名" value='{{recognizeeName}}'/>
+          </view>
+        </view>
+        <view class='dataList border-top'>
+          <view class="section__title left">被保人身份证</view>
+          <view class="section right">
+            <input type="idcard" value='{{recognizeeId}}' placeholder="请输入被保人身份证" />
+          </view>
+        </view>
+      </view>
+  </view>
+
+    <view class="content-title">受益人信息</view>
+  <view class='selectBox'>
+      <view class='dataList border-top'>
+        <view class="section__title left">受益人</view>
+        <view class="section right">法定受益人</view>
+      </view>
+  </view>
+
+  <view class='kefuBox'>
+        <!-- <view><icon class='iconfont icon-kefu'></icon><text class='kefuText'>客服</text></view> -->
+         <view>{{price}}<text class='money'>元</text></view>
+         <view><navigator style='color:#fff' url='/pages/payAndSign/payAndSign'>立即投保</navigator></view>
+  </view>
+  <view class='tipErr' hidden='{{tipErrShow}}'>{{tipErrText}}</view>
+</view>

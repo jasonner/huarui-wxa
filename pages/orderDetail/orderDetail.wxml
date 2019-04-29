@@ -1,0 +1,66 @@
+<!--pages/policyDetails/policyDetails.wxml-->
+<view class='containerBox'>
+  <view class='listBox'>
+    <view class='list'>
+          <view>保单号</view>
+          <view>{{contDetails[0].prvdContNo}}</view> 
+    </view>
+    <view class='list'>
+          <view>保险名称</view>
+          <view>{{orderBase.productName}}</view> 
+    </view>
+    <view class='list'>
+          <view>保障期间</view>
+          <view>{{contDetails[0].cvalidDate}}-{{contDetails[0].endDate}}</view> 
+    </view>
+
+    <view >
+      <view class='list'>
+          <view>保险公司</view>
+          <view>{{providerName}}</view> 
+      </view>
+    
+      <view class='list' >
+          <view>投保人</view>
+          <view>{{appntName}}</view> 
+      </view>
+      <view class='list'>
+          <view>被保人</view>
+          <view>{{insuredName}}</view> 
+      </view>
+      <view class='list'>
+          <view>受益人</view>
+          <view>法定</view> 
+      </view>
+
+    </view>
+        
+    <view class='list'>
+          <view>保费总额</view>
+          <view style='color:#ff0000'>{{orderBase.orderAmount}}元</view> 
+    </view>
+  </view>
+  
+  <!--保障简介  -->
+    <view class='intrduceTitle'>保障简介</view>
+    <view class='intrduceBox'>
+      <view class='intrduce'>
+          <text>保障项目</text>
+          <icon class='iconHeight'></icon>
+          <text>保额</text>
+      </view>
+       <view class='intrduceList intrduce listBorder' wx:key='{{riskDutys}}' wx:for="{{riskDutys}}">
+          <text>{{item.dutyName}}</text>
+           <icon class='iconTextHeight'></icon>
+          <text>{{item.dutyAmount}}</text>
+      </view>
+    </view>
+
+</view>
+<!-- <view class='loadingModal' hidden='{{loadingModelShow}}'></view> 
+<loading hidden="{{loadingHidden}}">
+加载中...
+</loading>  -->
+  <view class='loadingModal' hidden='{{loadingModelShow}}'></view> 
+   <view class='loding-img' hidden="{{loadingHidden}}"><image src='/assets/images/index/system-loading-226.gif'></image></view> 
+

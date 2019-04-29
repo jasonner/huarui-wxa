@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/productDetail/productDetail",
+    "pages/myPolicy/myPolicy",
+    "pages/insure/insure",
+    "pages/payAndSign/payAndSign",
+    "pages/result/result",
+    "pages/orderDetail/orderDetail",
+    "pages/healthTold/healthTold",
+    "pages/memberHome/memberHome",
+    "pages/user/index",
+    "pages/abountHuaRui/index",
+    "pages/termsOfInform/index",
+    "pages/moreFeatures/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "selectedColor": "#f3b256",
+    "list": [
+      {
+        "iconPath": "./assets/images/index/indexN.png",
+        "selectedIconPath": "./assets/images/index/index.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "./assets/images/index/myN.png",
+        "selectedIconPath": "./assets/images/index/my.png",
+        "pagePath": "pages/memberHome/memberHome",
+        "text": "我的"
+      }
+    ],
+    "debug": true
+  }
+}

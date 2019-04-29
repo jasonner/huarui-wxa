@@ -1,0 +1,29 @@
+// pages/healthTold/healthTold.js
+const app = getApp();
+ const hrp = require('../../api/hrp.js');
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+  
+  },
+  /**
+  * 生命周期函数--监听页面加载
+  */
+  onLoad: function (options) {
+    console.log(options);
+   this.setData({
+     href: 'https://weixin.huaruisales.com/h5/safeguard/insure/contentDetail.html?itemCode=' +options.item+'&instaceCode=HR_GUARANTEE_SALE&propertyCode=introduction'
+   })
+  //   hrp.productContent({
+  //    'itemCode': options.itemCode,
+  //    'instaceCode':"HR_GUARANTEE_SALE",
+  //    'propertyCode':"introduction"
+  //  }).then((data) => {
+  //     console.log(data);
+  //  })
+
+  },
+})

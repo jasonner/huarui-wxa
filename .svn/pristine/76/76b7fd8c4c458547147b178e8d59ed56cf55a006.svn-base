@@ -1,0 +1,25 @@
+// pages/healthTold/healthTold.js
+const hrp = require('../../api/hrp.js');
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+  
+  },
+  /**
+  * 生命周期函数--监听页面加载
+  */
+  onLoad: function (options) {
+    var href = options
+    console.log(href);
+    hrp.productContent({
+      "itemCode": options.item,
+      "instaceCode":"HR_GUARANTEE_SALE",
+      "propertyCode":"introduction"
+    }).then((data) => {
+      console.log(data)
+    })
+  },
+})

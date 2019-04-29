@@ -1,0 +1,10 @@
+export default {
+  // hrp_server_url: 'https://eservicetest.guohualife.com/hrp-restful-dat/restful/hrp',
+  // customer_server_url: 'https://eservicetest.guohualife.com/customer-restful-dat/restful/customer',
+  hrp_server_url: 'https://weixin.huaruisales.com/hrp-restful-dat/restful/hrp',
+  customer_server_url: 'https://weixin.huaruisales.com/restful/customer',
+  access_system_type: {
+    system: 'hr',
+    type: 'wxa'
+  }
+}

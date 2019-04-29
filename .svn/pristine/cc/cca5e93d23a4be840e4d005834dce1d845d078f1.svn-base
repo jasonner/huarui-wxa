@@ -1,0 +1,115 @@
+page{
+  background:#EFEFF4;
+}
+.content-title{
+  padding:30rpx;
+  color:#8d8d8d;
+}
+
+/**datalist**/
+.dataListBox{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background: #fff;
+  padding:0rpx 30rpx;
+  line-height: 60rpx;
+  }
+.dataList{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background: #fff;
+  font-size: 30rpx;
+  }
+.left{
+  float: left;
+  flex: 1;
+  width:200rpx;
+}
+.right{
+  color: #333;
+  flex: 2;
+}
+.markRight{
+  margin-left: 140rpx;
+}
+.rightPoint{
+padding: 30rpx;
+color: #d9544f;
+font-size: 28rpx;
+position: absolute;
+top: -27rpx;
+left: 146rpx;
+}
+.pointTextTip{
+  font-size: 25rpx;
+  margin-right: 10rpx;
+}
+.right input{
+  height:100%;
+  text-align: left;
+}
+.border-top{
+  position: relative;
+  border-top: 1px solid #dfdfdf;
+  height: 104rpx;
+  line-height: 104rpx;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+/*selectBox*/
+.selectBox{
+  width: 100%;
+  box-shadow: 4rpx 4rpx 4rpx #dfdfdf;
+}
+.markRightOccupation{
+  margin-left: 10rpx;
+}
+.lastSelectBox{
+  margin-bottom: 120rpx;
+}
+/*kefuBox*/
+.kefuBox{
+  width: 100%;
+  background: #fff;
+  color: #d9544f;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.kefuBox view:nth-of-type(1){
+font-size: 42rpx;
+line-height: 94rpx;
+flex: 1;
+text-align: center;
+}
+.kefuBox view:nth-of-type(2){
+  line-height: 94rpx;
+  font-size: 34rpx;
+  color: #fff;
+  flex:1;
+  text-align: center;
+  background: #f3b256
+}
+
+.kefuBox view:nth-of-type(2) button{
+  background:#f3b256;
+  color:#fff;
+  font-size:30rpx;
+  line-height: 94rpx;
+  border: none;
+}
+.kefuText{
+  display: block;
+  color: #333;
+  text-align: center;
+  font-size: 14px;
+}
+.money{
+  color: #333;
+  font-size:30rpx;
+  margin-left: 18rpx; 
+}

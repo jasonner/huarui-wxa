@@ -1,0 +1,47 @@
+import WxService from '../assets/plugins/wx-service/WxService'
+
+const checkLogin = (method = '', obj = {}) => {
+  var token = wx.getStorageSync("token")
+  var third = wx.getStorageSync("third")
+
+  customer.accountCheck({}).then((data) => {
+    if (data.third && data.token) {//还存在
+      return this.WxService[method](obj)
+    }else{
+      if(data.third){
+        wx.removeStorageSync("token")
+        customer.thirdLogin({ thirdToken: third, isLogin: '1' }).then((cont) => {
+          if (cont.result == "0" && cont.token){
+            wx.setStorageSync("token", cont.token)
+          }
+          return this.WxService[method](obj)
+        })
+      }else{
+        //重新做授权
+        wx.removeStorageSync("token")
+        wx.removeStorageSync("third")
+
+        wx.login({
+          success: res => {
+            if (res.code) {
+              customer.thirdAuth({ "type": "wx", "thirdType": "wxa", "system": "hr", "code": res.code }).then((result) => {
+                wx.setStorageSync("token", result.token)
+                wx.setStorageSync("third", result.thirdToken)
+                return this.WxService[method](obj)
+              })
+            } else {
+              console.log('获取用户登录态失败！' + res.errMsg)
+              return this.WxService[method](obj)
+            }
+          }
+        })
+      }
+    }
+  })
+
+}
+
+
+module.exports = {
+  checkLogin: checkLogin
+}

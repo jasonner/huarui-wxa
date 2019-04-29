@@ -1,0 +1,10 @@
+const http = require('../utils/http.js')
+const config = require('../env/config.js')
+
+const URL = config.hrp_server_url
+
+module.exports = {
+  // homeInfo: (params) => http.get(URL + '/home/info', { data: params })
+  homeInfo: (params) => http.get(URL + '/home/wxaInfo', { data: params })
+  // homeInfo: (params) => $http.get(URL + '/home/wxaInfo', { data: params })
+}

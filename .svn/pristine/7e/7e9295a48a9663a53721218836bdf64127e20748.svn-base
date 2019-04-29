@@ -1,0 +1,58 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "1.6.6",
+	"appid": "wxb99f39ca7ab1b635",
+	"projectname": "%E5%8D%8E%E7%91%9E%E9%A1%B9%E7%9B%AE2.1",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": 0,
+					"name": "demo",
+					"pathName": "pages/demo/demo",
+					"query": "",
+					"scene": "1019"
+				},
+				{
+					"id": -1,
+					"name": "单人聊天",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": "1007"
+				},
+				{
+					"id": 2,
+					"name": "支付",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": "1019"
+				}
+			]
+		}
+	}
+}

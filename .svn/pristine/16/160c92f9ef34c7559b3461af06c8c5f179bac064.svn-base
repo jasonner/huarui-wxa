@@ -1,0 +1,11 @@
+import http from '../utils/http.js'
+import config from'../env/config.js'
+
+const URL = config.customer_server_url
+
+module.exports = {
+  thirdAuth: (params) => http.get(URL + '/wxa/third/login', { data: params }),
+  smsSend: (params) => http.post(URL + '/verify/sms', {data: params }),
+  graphSend: (params) => http.get(URL + '/verify/graph', { data: params }),
+  URL:URL
+}

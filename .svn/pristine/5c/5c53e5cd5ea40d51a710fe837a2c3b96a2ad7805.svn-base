@@ -1,0 +1,119 @@
+/* pages/policyDetails/policyDetails.wxss */
+.containerBox{
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  background: #fff;
+}
+page{
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+}
+.headerBox{
+  width: 92%;
+  margin: 0 auto;
+  display: flex;
+  height: 180rpx;
+  border-bottom: 4rpx solid #ffaf3e;
+}
+.headerBox>view:nth-of-type(1){
+  flex: 1;
+  padding-top: 46rpx;
+}
+.headerBox>view:nth-of-type(2){
+  flex: 1;
+  text-align: right;
+  padding-top: 13rpx;
+}
+.headerLeft>text:nth-of-type(1){
+      font-size: 30rpx;
+      color: #333;
+}
+.headerLeft>text:nth-of-type(2){
+      font-size: 20rpx;
+      color: #999;
+      padding-top: 25rpx;
+}
+.policyImg{
+  width: 128rpx;
+  height: 128rpx;
+}
+/*listBox*/
+.listBox{
+  width: 100%;
+  box-sizing: border-box;
+  background:#fff;
+}
+.list{
+  display: flex;
+  height: 86rpx;
+  line-height: 86rpx;
+  border-bottom: 1rpx solid #dfdfdf;
+}
+.list>view{
+  flex: 1;
+  font-size: 30rpx;
+}
+.list>view:nth-of-type(1){
+  color: #7c7c7c;
+}
+.list>view:nth-of-type(2){
+  color: #333;
+  text-align: right;
+}
+
+/*保障简介*/
+.intrduceTitle{
+  font-size: 28rpx;
+  color: #7c7c7c;
+  margin: 40rpx 0;
+}
+.intrduceBox{
+  /* width:668rpx; */
+  font-size: 28rpx;
+}
+.intrduce{
+  width: 100%;
+  height: 85rpx;
+  line-height: 80rpx;
+  display: flex;
+  background: #ffaf3e;
+  color:#fff;
+}
+.insureProject{
+ height: 120rpx;
+}
+.insureProject>text{
+  margin-top:30rpx !important;
+  }
+.intrduce:nth-of-type(1){
+  border: 1rpx solid #ffaf3e;
+}
+.intrduce text{
+  flex: 1;
+  margin: auto;
+  text-align: center;
+  /* height: 34rpx; */
+  line-height: 34rpx;
+}
+.dutyAmount{
+  height:34rpx;
+  line-height:65rpx;
+}
+.intrduce text:nth-of-type(1){
+    border-right: 4rpx solid #fff;
+}
+.intrduceList{
+  background: #fff;
+  color: #333;
+}
+.listBorder{
+  border: 1rpx solid #dfdfdf;
+  border-top: none;
+}
+.intrduceList text:nth-of-type(1){
+    border-right: 4rpx solid #dfdfdf;
+}

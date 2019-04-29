@@ -1,0 +1,2 @@
+<!--pages/healthTold/healthTold.wxml-->
+<web-view src='https://weixin.huaruisales.com/h5/safeguard/insure/contentDetail.html?itemCode=HRWX_HRP_PS5002&instaceCode=HR_GUARANTEE_SALE&propertyCode=introduction'></web-view>

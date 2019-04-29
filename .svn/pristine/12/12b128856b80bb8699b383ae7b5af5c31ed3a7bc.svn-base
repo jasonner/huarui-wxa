@@ -1,0 +1,114 @@
+/**index.wxss**/
+.container{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.panic{
+  position: absolute;
+  right: 92rpx;
+  bottom: 75rpx;
+  display: block;
+  font-size: 36rpx;
+  color: #ffaf3e;
+  border: 2rpx solid #ffaf3e;
+  padding: 16rpx 30rpx;
+  background: #fff;
+  border-radius: 10rpx;
+}
+.img{
+  width: 100%;
+  height: 100%;
+  -webkit-filter:saturate(1);
+
+  }
+.swiperBox{
+  position: absolute;
+  bottom: 37rpx;
+  left: 0rpx;
+  width: 750rpx;
+  border-radius: 10rpx;
+}
+swiper-item{
+  padding: 0 30rpx;
+  height: 330rpx;
+}
+.slide-image{
+  width: 676rpx;
+  height: 335rpx;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+}
+
+swiper-container{  
+  position: relative;  
+}  
+.swiper-container .swiper{  
+  height: 300rpx;  
+}  
+.swiper-container .swiper .img{  
+  width: 100%;  
+  height: 100%;  
+}  
+.swiper-container .dots{  
+  position: absolute;  
+  left: 0;  
+  right: 0;  
+  bottom: 12rpx;  
+  display: flex;  
+  justify-content: center;  
+}  
+.swiper-container .dots .dot{  
+  margin: 0 8rpx;
+  width:14rpx;  
+  height: 14rpx;  
+  background: #999;  
+  border-radius: 8rpx;  
+  transition: all .6s;  
+}  
+.swiper-container .dots .dot.active{  
+  width: 14rpx;  
+  background: #f80;  
+}  
+.tabTextBox{
+ width:100%;
+position:absolute;
+top:61rpx;
+right:-248rpx;
+display:flex;
+flex-direction:column;
+font-size:24rpx;
+font-weight: 600;
+}
+.tabTextBox text{
+  width: 350rpx;
+  flex: 1
+}
+.tabTextBox text:nth-of-type(1){
+  margin-left:88rpx;
+  font-size:34rpx;
+  margin-top: 10rpx;
+  color: #382d50;
+}
+.tabTextBox text:nth-of-type(2){
+  margin-left:96rpx;
+  font-size:30rpx;
+  color: #b0b0b0;
+
+}
+.tabTextBox text:nth-of-type(3){
+  margin-left:120rpx;
+  margin-top:10rpx;
+  color: #999;
+}
+.tabTextBox text:nth-of-type(4){
+  width:180rpx;
+  height:46rpx;
+  border:1px solid #f3b256;
+  text-align: center;
+  line-height:53rpx;  
+  border-radius: 5rpx; 
+  color: #f3b256;
+  margin-left: 200rpx;
+  margin-top: 40rpx
+}

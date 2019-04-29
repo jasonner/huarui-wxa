@@ -1,0 +1,2 @@
+<!--pages/moreFeatures/index.wxml-->
+<web-view src='{{moreFeaturesHref}}'></web-view>

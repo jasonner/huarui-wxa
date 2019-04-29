@@ -1,0 +1,152 @@
+const hrp = require('../../api/hrp.js');
+import http from '../../utils/http.js';
+const app = getApp();
+var productDetailInfo = app.globalData.productDetailInfo;
+var buyInfo = app.globalData.buyInfo;//购买信息
+var orderInfo = app.globalData.orderInfo;//订单信息
+var insuredInfo = app.globalData.insuredInfo;//被保人信息
+var selfRelationFlag = app.globalData.selfRelationFlag//是否只支持本人购买
+var isLogin = false;//登录标志
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    //banner图片数据
+    bannerInfo: [],
+
+    //产品优势
+    productAdvantageInfo: [],
+
+    //保障计划
+    safeguardPlansInfo: [
+      {
+        planDesc: []
+      }
+    ],
+
+    //产品优势
+    titleArr: ['交20年保20年，定制期限，价格恒定', '身故返保费，首年赠绿通及抗癌检测'],
+
+    tabArr: {//产品productcode
+      curHdIndex: 2258,
+      curBdIndex: 2258
+    },
+
+    //默认产品份数
+    fewNum: 1,
+
+    //保障期间默认时间
+    Protectiontext: "",
+
+    //生效日期默认时间
+    effectiveDate: "",
+
+    //性别是否展示
+    sexShow: true,
+    sexSelect: ['男', '女'], //性别数据
+
+    //被保人出生日期是否展示
+    BirthdayShow: true,
+
+    //初始化被保人生日
+    initialBirthday: "",
+
+    modelShow: true,//遮罩层
+    clauseShow: true,//条款弹层 
+
+    //保费
+    price: 0,
+
+    //缴费期间显示初始化
+    initialPremiumPaymentPeriod: "",
+    PremiumPaymentPeriodData: [],//缴费期间数据
+    PayDataChangeSelectNo: true,//缴费期间是否固定可选
+    PayDataShow: true,//缴费期间是否显示
+
+    Protection: [],//保障期间数据
+    ProtectionShow: true,//保障期间是否显示
+    ProtectionDataChangeNO: true,//保障期间是否可选
+
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    var that = this;
+    console.log(options);
+    orderInfo.itemCode = options.itemCode
+    http.all([hrp.productInfo({//请求产品数据
+      itemCode: options.itemCode
+    })]).then((data) => {
+      //初始化banner图渲染
+      this.initBannerInfo(data);
+      //初始化产品优势渲染
+      this.initProductAdvantageInfo(data);
+      //初始化保障计划标签
+      this.initPlanTab(data);
+      //初始化保障计划详情渲染
+      this.initInsureDetail(data);
+      //初始化份数渲染
+      this.initMult(data);
+      //初始化缴费期间渲染
+      this.initPayInterval(data);
+      //初始化保障期间渲染
+      this.initInsurePeroid(data);
+      //初始化生效日期渲染
+      this.initCvalidate(data);
+      //初始化被保人性别渲染
+      this.initSex(data);
+      //初始化积分抵扣渲染
+      initPointsDeduction(data);
+    })
+  },
+  //初始化banner图渲染
+  initBannerInfo:function(){
+
+  },
+
+  //初始化产品优势渲染
+  initProductAdvantageInfo:function(){
+
+  },
+
+  //初始化保障计划标签
+  initPlanTab:function(){
+
+  },
+
+  //初始化保障计划详情渲染
+  initInsureDetail:function(){
+
+  },
+
+  //初始化份数渲染
+  initMult:function(){
+
+  },
+
+  //初始化缴费期间渲染
+  initPayInterval:function(){
+
+  },
+
+   //初始化保障期间渲染
+  initInsurePeroid:function(){
+
+  },
+
+  //初始化生效日期渲染
+  initCvalidate:function(){
+
+  },
+
+  //初始化被保人性别渲染
+  initSex:function(){
+
+  }
+
+
+})

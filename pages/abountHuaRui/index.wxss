@@ -1,0 +1,56 @@
+/* pages/abountHuaRui/index.wxss */
+.intreduce{
+  width: 100%;
+  margin-top: 10rpx;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  line-height: 60rpx;
+  font-size: 30rpx;
+  color: #333;
+  text-indent:70rpx;
+}
+.intreduceBox{
+  background: #fff;
+  padding: 30rpx 0; 
+}
+.abountHuaRui{
+  width: 100%;
+  font-size: 40rpx;
+  padding-bottom: 10rpx;
+  color: #000;
+}
+.abountHuaRuiLogo{
+  text-align: center;
+  width: 100%;
+  background: #fff;
+  padding: 30rpx 0; 
+  font-size: 30rpx;
+}
+.abountHuaRuiLogo image{
+  width: 150rpx;
+  height: 150rpx;
+}
+.salesColtd{
+  font-size: 30rpx;
+  margin:10rpx 0;
+}
+.salesColtdE{
+  font-size: 18rpx;
+  color: #666;
+}
+.salesintreduce{
+  position: relative;
+  padding:27rpx;
+  padding-left: 60rpx;
+  color: #f3b256;
+  padding-bottom: 0;
+}
+.salesintreduce::after{
+  width: 10rpx;
+  height:50rpx;
+  position: absolute;
+  left: 30rpx;
+  top: 26rpx;
+  content: "";
+  background:#f3b256; 
+}

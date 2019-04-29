@@ -1,0 +1,285 @@
+const app = getApp()
+const util = require('../../utils/util.js')
+import pageUtil from '../../utils/page-util.js'
+const customer = require('../../api/customer.js')
+const hrp = require('../../api/hrp.js')
+import http from '../../utils/http.js'
+import config from '../../env/config.js'
+
+// 查询订单列表：已支付
+var getList = function (that){
+  console.log('getList');
+  that.setData({
+    loadingModelShow: false,
+    loadingHidden: false,
+  }) 
+  // 设置页面一加在进来就显示"加载中"模态框信息
+// 已付款情况：查询订单列表
+  hrp.orderList({ orderStatusGroup: '02', pageSize:  that.data.page, currentPage: ""}).then((data) => {
+    that.setData({
+      total:data.total,
+      records: data.records
+    })
+    console.log(data)
+    if (data.records) {
+      // 无订单
+      if (data.records === 0) {
+        console.log('已支付无订单')
+        this.noProductPay()
+      } else {
+        console.log('已支付有订单')
+        // 有订单
+        var payedOrderList = data.orderList;
+        console.log(payedOrderList);
+        that.setData({
+          payedOrderList: payedOrderList
+        });
+        console.log(that.data.payedOrderList)
+        that.data.page++;
+        
+        console.log('getList当前页(page++)：第' + that.data.page + '页')
+        that.setData({
+          hidden: true
+        });  
+        that.hasProductPay()
+      }
+    }
+    that.setData({
+      loadingModelShow: true,
+      loadingHidden: true
+    })
+  })
+}
+
+// 查询订单列表：待支付
+var noPayList = function (that){
+  console.log('noPayList')
+  // 设置页面一加在进来就显示"加载中"模态框信息
+  that.setData({
+    hidden: false
+  });
+  // 未付款情况：查询订单列表
+  hrp.orderList({ orderStatusGroup: '01', pageSize:  that.data.noPayPage, currentPage: ""}).then((data) => {
+    console.log(data)
+    that.setData({
+      total: data.total
+    })
+    console.log(data)
+    if (data.records) {
+      // 无订单
+      if (data.records === 0) {
+        console.log('待付款无订单')
+        this.noProduct()
+      } else {
+        console.log('待付款有订单')
+        // 有订单
+        var waitPayedOrderList = data.orderList;
+        console.log(waitPayedOrderList);
+        that.setData({
+          waitPayedOrderList: waitPayedOrderList
+        });
+        console.log(that.data.waitPayedOrderList)
+        that.data.noPayPage++;
+        
+        console.log('noPayList当前页(noPayPage++)：第' + that.data.noPayPage + '页')
+        that.setData({
+          hidden: true
+        });
+        that.hasProduct()
+      }
+    } else {
+      wx.showToast({
+        title: data.resultMessage,
+        icon: 'loading',
+        duration: 2000
+      })
+      
+    }
+  })
+}
+
+
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    selected: true, //已付款情况tab激活状态控制
+    selected1: false, //待付款情况tab激活状态控制
+    pay: true, //支付状态
+    hasProduct:false, //待付款情况下，有产品信息
+    noProduct: true, //待付款情况下，暂无保单信息
+    hasProductPay: false, //已付款情况下，有产品信息
+    noProductPay: true, //已付款情况下，暂无保单信息
+    waitPayedOrderList: [], //待支付订单列表
+    payedOrderList: [], //已支付订单列表
+    page: 4, //当前页(已支付)
+    noPayPage:5,//当前页(待支付)
+    total: 1, //总页数
+    records: 0, //总条数
+    scrollTop: 0,
+    scrollHeight:0,
+    hidden:true, //加载图标是否显示
+    
+  },
+  // 已支付
+  selected: function (e) {
+    var that = this;
+    console.log('selected:已支付')
+    this.setData({
+      selected1: false,
+      selected: true,
+      pay:true
+    })
+    console.log(this.data.pay)
+    getList(that)
+  },
+  // 待支付
+  selected1: function (e) {
+    var that = this;
+    console.log('selected1:待支付')
+    this.setData({
+      selected: false,
+      selected1: true,
+      pay:false
+    })
+    console.log(this.data.pay)
+     noPayList(that)
+  },
+  // 未支付保单列表显示
+  hasProduct:function(){
+    this.setData({
+      hasProduct:true,
+      noProduct:false
+    })
+  },
+  // 未支付情况下暂无保单
+  noProduct:function(){
+    this.setData({
+      noProduct:true,
+      hasProduct:false
+    })
+  },
+  // 已支付保单列表显示
+  hasProductPay: function () {
+    this.setData({
+      hasProductPay: true,
+      noProductPay: false
+    })
+  },
+  // 已支付情况下暂无保单
+  noProductPay: function () {
+    this.setData({
+      noProductPay: true,
+      hasProductPay: false
+    })
+  },
+
+
+  
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.setData({
+      loadingModelShow: false,
+      loadingHidden: false
+    })
+    pageUtil.checkLogin().then((data)=>{
+      console.log(data)
+      var that = this;
+      getList(that);
+      noPayList(that);
+    })
+    
+    var that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log(res)
+        console.info(res.windowHeight/1.2);
+        that.setData({
+          scrollHeight: res.windowHeight/1.2
+        });
+      }
+    });  
+     getList(that);
+     noPayList(that);
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    this.setData({
+      loadingModelShow: true,
+      loadingHidden: true,
+    }) 
+  },
+  onShow:function(){
+    this.setData({
+      loadingModelShow: false,
+      loadingHidden: false,
+    }) 
+  },
+  //下拉刷新
+  onPullDownRefresh: function () {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+
+    //模拟加载
+    setTimeout(function () {
+      // complete
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+    }, 1500);
+  },
+  // 分页处理
+  bindDownLoad: function () {
+    var that = this;
+    console.log('页面滑倒底部')
+    //页面滑动到底部的事件  
+    if(that.data.pay){
+      console.log('已支付tab页')
+      // 已支付tab页
+      if (that.data.total == that.data.records){
+  
+        wx.showModal({
+          title: '提示',
+          content: '已经没有更多数据了',
+          confirmColor: "#f3b256"
+        })
+      }else{
+        this.setData({
+          loadingModelShow: true,
+          loadingHidden: true,
+        }) 
+        that.data.page+=1;
+          getList(that,that.data.page);
+      }
+    }else{
+      console.log('未支付tab页')
+      console.log(that.data.total);
+      console.log()
+      // 未支付tab页
+      if (that.data.total == that.data.records){
+  
+        wx.showModal({
+          title: '提示',
+          content: '已经没有更多数据了',
+          confirmColor: "#f3b256"
+        })
+      }else{
+        that.data.noPayPage+=1;
+        noPayList(that, that.data.noPayPage)
+      }
+    }
+  },  
+  // 页面滚动监听
+  scroll: function (event) {
+    //  该方法绑定了页面滚动时的事件，我这里记录了当前的position.y的值,为了请求数据之后把页面定位到这里来。  
+    this.setData({
+      scrollTop: event.detail.scrollTop
+    });
+  },
+ 
+
+})
